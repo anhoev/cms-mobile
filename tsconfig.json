@@ -17,6 +17,7 @@
         "app/views/list/list.ts",
         "app/views/list/grocery-list.ts",
         "app/views/login/login.ts",
+        "app/views/main-page/main-page.ts",
         "app/views/register/register.ts",
         "node_modules/tns-core-modules/tns-core-modules.d.ts"
     ],
