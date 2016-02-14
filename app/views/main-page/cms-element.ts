@@ -1,27 +1,47 @@
-import {Component, DynamicComponentLoader, Input, ElementRef} from "angular2/core";
+import {Component, DynamicComponentLoader, Input, Output, ElementRef} from "angular2/core";
 import {NgStyle} from 'angular2/common';
-import {Cms, Container} from "../../shared/cms/cms";
+import {Cms, Container, ContainerService} from "../../shared/cms/cms";
+const _ = global._ = require('lodash');
+const http = require("http");
+import {CmsContainer} from './cms-container';
 
-function toComponent(template:string, model:any, directives = []) {
-    directives.push(NgStyle);
+function toComponent(template:string, model:any, type:String, containers, directives = []) {
+    directives.push(NgStyle, CmsContainer);
     @Component({
-        selector: 'dynamic-component',
+        selector: '[dynamic-component]',
         template,
-        directives
+        directives,
+        providers: [ContainerService]
     })
     class DynamicComponent {
         public model
 
-        constructor() {
+        constructor(private cms:Cms, private containerService:ContainerService) {
+            containerService.data = {containers};
+
             this.model = model;
-            this.setStyles = () => {
-                let styles = '';
-                if (model.styles) {
-                    if (model.styles.backgroundColor) styles += `background-color:${model.styles.backgroundColor};`
-                    if (model.styles.color) styles += `color:${model.styles.color};`
-                }
-                return styles;
+            this.fn = {};
+            _.each(cms.data.types[type].fn, (f, k) => this.fn[k] = f.bind(this.model))
+
+            this.model.$find = (_type, ObjId) => {
+                return _.find(cms.data.types[_type].list, {_id: ObjId instanceof Object ? ObjId._id : ObjId});
             }
+
+            function post(link, body) {
+                return http.request({
+                    url: cms.basePath + link,
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    content: JSON.stringify(body)
+                }).then(function (response) {
+                    return {data: response.content.toString()};
+                })
+            }
+
+            this.serverFn = {};
+            _.each(cms.data.types[type].serverFn, (fn, k) => {
+                fn.bind(this.model)(post, this, type, k);
+            })
         }
     }
 
@@ -29,8 +49,7 @@ function toComponent(template:string, model:any, directives = []) {
 }
 
 @Component({
-    selector: "cms-element",
-    providers: [Cms],
+    selector: "[cms-element]",
     template: ``
 })
 export class CmsElement {
@@ -38,20 +57,17 @@ export class CmsElement {
     public model:any
     loader:DynamicComponentLoader
     elementRef:ElementRef
-    cms:Cms
 
-    constructor(loader:DynamicComponentLoader, elementRef:ElementRef, cms:Cms) {
+    constructor(loader:DynamicComponentLoader, elementRef:ElementRef, private cms:Cms) {
         this.loader = loader;
         this.elementRef = elementRef;
-        this.cms = cms;
     }
 
     ngOnInit() {
-        if (this.cms.types[this.data.type]) {
-            const template:string = this.cms.types[this.data.type].template;
-            this.model = this.data._data;
-            this.loader.loadNextToLocation(toComponent(template, this.model), this.elementRef);
+        if (this.cms.data.types[this.data.type]) {
+            const template:string = this.cms.data.types[this.data.type].template;
+            this.model = _.find(this.cms.data.types[this.data.type].list, model => model._id === this.data.ref);
+            this.loader.loadNextToLocation(toComponent(template, this.model, this.data.type, this.data.containers), this.elementRef);
         }
-
     }
 }

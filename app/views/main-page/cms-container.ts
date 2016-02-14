@@ -1,18 +1,22 @@
-import {Component, DynamicComponentLoader, Input} from "angular2/core";
-import {Cms, Container} from "../../shared/cms/cms";
+import {Component, DynamicComponentLoader, Input, Host, Optional} from "angular2/core";
+import {Cms, Container, ContainerService} from "../../shared/cms/cms";
 import {CmsElement} from "./cms-element";
 
 @Component({
-    selector: "cms-container",
+    selector: "[cms-container]",
     templateUrl: "views/main-page/cms-container.html",
     directives: [CmsElement]
 })
 export class CmsContainer {
-    @Input() cmsContainerData:Container;
+    @Input() name:String;
 
-    constructor() {
+    constructor(@Optional() private containerService: ContainerService) {
     }
 
     ngOnInit() {
+        if (this.containerService){
+            const container = _.find(this.containerService.data.containers, c => c.name === this.name);
+            if (container) this.elements = container.elements;
+        }
     }
 }

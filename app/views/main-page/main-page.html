@@ -1,4 +1,5 @@
 <StackLayout>
-    <Image src="res://logo" stretch="none" horizontalAlignment="center"></Image>
-    <cms-container name="buttons" [cmsContainerData]="containers.buttons"></cms-container>
+    <Button text="Sync" (tap)="cms.sync()"></Button>
+    <WrapLayout cms-container *ngFor="#container of cms.data.containers"
+                   [name]="container.name" ></WrapLayout>
 </StackLayout>

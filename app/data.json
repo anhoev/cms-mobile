@@ -1,0 +1,167 @@
+{
+  "Wrapper": {
+    "list": [
+      {
+        "_id": "56bd01028be18d5374ac6983",
+        "name": "Dynamic",
+        "__v": 0
+      },
+      {
+        "_id": "56bd01028be18d5374ac6984",
+        "name": "Alerts",
+        "__v": 0
+      }
+    ],
+    "fn": {
+      "getWebStyles": "function () {\n        const _styles = {}\n        _.each(this.styles, style => {\n            _styles[style.choice] = style[style.choice];\n        })\n        return _styles;\n    }",
+      "getStyles": "function () {\n        let styles = '';\n        try {\n            const _styles = {}\n            this.styles.forEach(style => {\n                _styles[style.choice] = style[style.choice];\n            })\n            _.each(_styles, (v, k) => {\n                styles += `${_.kebabCase(k)}:${v};`.replace('px', '');\n            })\n        } catch (e) {\n        }\n        return styles;\n    }"
+    },
+    "serverFn": {
+      "link": "function (post, scope, type, fnName) {\n                const model = this;\n                if (!scope.serverFnData) scope.serverFnData = [];\n                scope.serverFn[fnName] = function () {\n                    const getFnData = args => _.find(scope.serverFnData,\n                        v => JSON.stringify({args: v.args, k: v.k}) === JSON.stringify({args, k: fnName}));\n                    const data = getFnData(arguments);\n                    if (data && data.result) return data.result\n                    if (!data) {\n                        scope.serverFnData.push({args: arguments, k: fnName});\n                        const args = arguments;\n                        post(`/cms-types/${type}/${model._id}/${fnName}`, arguments)\n                            .then(res => {\n                                getFnData(args).result = res.data;\n                            })\n                    }\n                };\n            }"
+    }
+  },
+  "User": {
+    "list": [],
+    "fn": {
+      "getWebStyles": "function () {\n        const _styles = {}\n        _.each(this.styles, style => {\n            _styles[style.choice] = style[style.choice];\n        })\n        return _styles;\n    }",
+      "getStyles": "function () {\n        let styles = '';\n        try {\n            const _styles = {}\n            this.styles.forEach(style => {\n                _styles[style.choice] = style[style.choice];\n            })\n            _.each(_styles, (v, k) => {\n                styles += `${_.kebabCase(k)}:${v};`.replace('px', '');\n            })\n        } catch (e) {\n        }\n        return styles;\n    }"
+    },
+    "serverFn": {
+      "link": "function (post, scope, type, fnName) {\n                const model = this;\n                if (!scope.serverFnData) scope.serverFnData = [];\n                scope.serverFn[fnName] = function () {\n                    const getFnData = args => _.find(scope.serverFnData,\n                        v => JSON.stringify({args: v.args, k: v.k}) === JSON.stringify({args, k: fnName}));\n                    const data = getFnData(arguments);\n                    if (data && data.result) return data.result\n                    if (!data) {\n                        scope.serverFnData.push({args: arguments, k: fnName});\n                        const args = arguments;\n                        post(`/cms-types/${type}/${model._id}/${fnName}`, arguments)\n                            .then(res => {\n                                getFnData(args).result = res.data;\n                            })\n                    }\n                };\n            }"
+    }
+  },
+  "Button": {
+    "list": [
+      {
+        "_id": "56bd01c0baa4ea6d74e3925c",
+        "size": "sm",
+        "type": "warning",
+        "__v": 0,
+        "onclick": "function () {\n  this.text += '!';\n}",
+        "_category": [],
+        "styles": [
+          {
+            "choice": "color",
+            "color": "#117228",
+            "_id": "56bdb750b19c0137779c0eb4",
+            "fontWeight": "normal"
+          },
+          {
+            "choice": "backgroundColor",
+            "backgroundColor": "#ffffff",
+            "_id": "56bdb7c9eaef234877d1c06e",
+            "fontWeight": "normal"
+          },
+          {
+            "choice": "borderWidth",
+            "borderWidth": 1,
+            "_id": "56bdbb026cff5f6c7707c2e5",
+            "fontWeight": "normal"
+          },
+          {
+            "choice": "borderRadius",
+            "borderRadius": "4px",
+            "_id": "56bdbb026cff5f6c7707c2e4",
+            "fontWeight": "normal"
+          },
+          {
+            "choice": "borderColor",
+            "borderColor": "#2ab935",
+            "_id": "56bdbb896cff5f6c7707c2e7",
+            "fontWeight": "normal"
+          },
+          {
+            "choice": "fontWeight",
+            "_id": "56bdc44f0045820078feff1d",
+            "fontWeight": "bold"
+          },
+          {
+            "choice": "fontStyle",
+            "fontStyle": "italic",
+            "_id": "56bdc5c40045820078feff1e",
+            "fontWeight": "normal"
+          }
+        ],
+        "text": "Styles Button"
+      }
+    ],
+    "template": "<Button [text]=\"model.text\" [class]=\"model.class\" [style]=\"fn.getStyles()\" (tap)=\"model.onclick()\"></Button>",
+    "fn": {
+      "send": "function (text) {\n            // result is promise!\n            this.$send(`cms/element/${this.friend._id || this.friend}/buttonClick`, text)\n                .then(r => this.text = r);\n        }",
+      "$onButtonClick": "function (color) {\n            this.color = color;\n            console.log(color);\n            return `happy with ${this.text}`;\n        }",
+      "getWebStyles": "function () {\n        const _styles = {}\n        _.each(this.styles, style => {\n            _styles[style.choice] = style[style.choice];\n        })\n        return _styles;\n    }",
+      "getStyles": "function () {\n        let styles = '';\n        try {\n            const _styles = {}\n            this.styles.forEach(style => {\n                _styles[style.choice] = style[style.choice];\n            })\n            _.each(_styles, (v, k) => {\n                styles += `${_.kebabCase(k)}:${v};`.replace('px', '');\n            })\n        } catch (e) {\n        }\n        return styles;\n    }"
+    },
+    "serverFn": {
+      "customText": "function (post, scope, type, fnName) {\n                const model = this;\n                if (!scope.serverFnData) scope.serverFnData = [];\n                scope.serverFn[fnName] = function () {\n                    const getFnData = args => _.find(scope.serverFnData,\n                        v => JSON.stringify({args: v.args, k: v.k}) === JSON.stringify({args, k: fnName}));\n                    const data = getFnData(arguments);\n                    if (data && data.result) return data.result\n                    if (!data) {\n                        scope.serverFnData.push({args: arguments, k: fnName});\n                        const args = arguments;\n                        post(`/cms-types/${type}/${model._id}/${fnName}`, arguments)\n                            .then(res => {\n                                getFnData(args).result = res.data;\n                            })\n                    }\n                };\n            }",
+      "link": "function (post, scope, type, fnName) {\n                const model = this;\n                if (!scope.serverFnData) scope.serverFnData = [];\n                scope.serverFn[fnName] = function () {\n                    const getFnData = args => _.find(scope.serverFnData,\n                        v => JSON.stringify({args: v.args, k: v.k}) === JSON.stringify({args, k: fnName}));\n                    const data = getFnData(arguments);\n                    if (data && data.result) return data.result\n                    if (!data) {\n                        scope.serverFnData.push({args: arguments, k: fnName});\n                        const args = arguments;\n                        post(`/cms-types/${type}/${model._id}/${fnName}`, arguments)\n                            .then(res => {\n                                getFnData(args).result = res.data;\n                            })\n                    }\n                };\n            }"
+    }
+  },
+  "Label": {
+    "list": [
+      {
+        "_id": "56bde4d682351c6c7cae92a9",
+        "__v": 0,
+        "_category": [],
+        "styles": [
+          {
+            "choice": "fontSize",
+            "fontSize": "20px",
+            "_id": "56bde8e40932b3797cecfbea",
+            "fontWeight": "normal"
+          },
+          {
+            "choice": "color",
+            "color": "#e23c3c",
+            "_id": "56bde951c515b1897dd59260",
+            "fontWeight": "normal"
+          },
+          {
+            "choice": "fontStyle",
+            "fontStyle": "italic",
+            "_id": "56bdeb0340f538a07dabe058",
+            "fontWeight": "normal"
+          },
+          {
+            "choice": "fontWeight",
+            "_id": "56be4e5b134a8b82033e2a87",
+            "fontWeight": "300"
+          }
+        ],
+        "text": "Label Einfach °___^"
+      }
+    ],
+    "template": "<Label [text]=\"model.text\" [class]=\"model.class\" [style]=\"fn.getStyles()\"></Label>",
+    "fn": {
+      "getWebStyles": "function () {\n        const _styles = {}\n        _.each(this.styles, style => {\n            _styles[style.choice] = style[style.choice];\n        })\n        return _styles;\n    }",
+      "getStyles": "function () {\n        let styles = '';\n        try {\n            const _styles = {}\n            this.styles.forEach(style => {\n                _styles[style.choice] = style[style.choice];\n            })\n            _.each(_styles, (v, k) => {\n                styles += `${_.kebabCase(k)}:${v};`.replace('px', '');\n            })\n        } catch (e) {\n        }\n        return styles;\n    }"
+    },
+    "serverFn": {
+      "link": "function (post, scope, type, fnName) {\n                const model = this;\n                if (!scope.serverFnData) scope.serverFnData = [];\n                scope.serverFn[fnName] = function () {\n                    const getFnData = args => _.find(scope.serverFnData,\n                        v => JSON.stringify({args: v.args, k: v.k}) === JSON.stringify({args, k: fnName}));\n                    const data = getFnData(arguments);\n                    if (data && data.result) return data.result\n                    if (!data) {\n                        scope.serverFnData.push({args: arguments, k: fnName});\n                        const args = arguments;\n                        post(`/cms-types/${type}/${model._id}/${fnName}`, arguments)\n                            .then(res => {\n                                getFnData(args).result = res.data;\n                            })\n                    }\n                };\n            }"
+    }
+  },
+  "StackLayout": {
+    "list": [
+      {
+        "_id": "56bdf33c3e8bd4677e5f2e8f",
+        "__v": 0,
+        "_category": []
+      },
+      {
+        "_id": "56bdf4600373a6877e1418e5",
+        "__v": 0,
+        "title": "stack-layout",
+        "direction": "horizontal",
+        "_category": []
+      }
+    ],
+    "template": "\n    <Label [text]=\"model.title\"></Label>\n    <cms-container [name]=\"model.title\"></cms-container>\n    ",
+    "fn": {
+      "getWebStyles": "function () {\n        const _styles = {}\n        _.each(this.styles, style => {\n            _styles[style.choice] = style[style.choice];\n        })\n        return _styles;\n    }",
+      "getStyles": "function () {\n        let styles = '';\n        try {\n            const _styles = {}\n            this.styles.forEach(style => {\n                _styles[style.choice] = style[style.choice];\n            })\n            _.each(_styles, (v, k) => {\n                styles += `${_.kebabCase(k)}:${v};`.replace('px', '');\n            })\n        } catch (e) {\n        }\n        return styles;\n    }"
+    },
+    "serverFn": {
+      "link": "function (post, scope, type, fnName) {\n                const model = this;\n                if (!scope.serverFnData) scope.serverFnData = [];\n                scope.serverFn[fnName] = function () {\n                    const getFnData = args => _.find(scope.serverFnData,\n                        v => JSON.stringify({args: v.args, k: v.k}) === JSON.stringify({args, k: fnName}));\n                    const data = getFnData(arguments);\n                    if (data && data.result) return data.result\n                    if (!data) {\n                        scope.serverFnData.push({args: arguments, k: fnName});\n                        const args = arguments;\n                        post(`/cms-types/${type}/${model._id}/${fnName}`, arguments)\n                            .then(res => {\n                                getFnData(args).result = res.data;\n                            })\n                    }\n                };\n            }"
+    }
+  }
+}

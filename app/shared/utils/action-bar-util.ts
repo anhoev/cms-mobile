@@ -5,6 +5,7 @@ declare var UIBarStyle: any;
 
 export module ActionBarUtil {
     export function setTitle(title: string) {
+        debugger;
         var actionBar = topmost().currentPage.actionBar;
         actionBar.title = title;
     }
