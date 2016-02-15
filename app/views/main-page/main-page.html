@@ -1,5 +1,6 @@
 <StackLayout>
     <Button text="Sync" (tap)="cms.sync()"></Button>
-    <WrapLayout cms-container *ngFor="#container of cms.data.containers"
-                   [name]="container.name" ></WrapLayout>
+    <WrapLayout cms-container
+                *ngFor="#container of cms.data.containers"
+                [name]="container.name" ></WrapLayout>
 </StackLayout>

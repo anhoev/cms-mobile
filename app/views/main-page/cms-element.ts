@@ -8,7 +8,7 @@ import {CmsContainer} from './cms-container';
 function toComponent(template:string, model:any, type:String, containers, directives = []) {
     directives.push(NgStyle, CmsContainer);
     @Component({
-        selector: '[dynamic-component]',
+        selector: 'WrapLayout[dynamic-component]',
         template,
         directives,
         providers: [ContainerService]
@@ -67,7 +67,11 @@ export class CmsElement {
         if (this.cms.data.types[this.data.type]) {
             const template:string = this.cms.data.types[this.data.type].template;
             this.model = _.find(this.cms.data.types[this.data.type].list, model => model._id === this.data.ref);
-            this.loader.loadNextToLocation(toComponent(template, this.model, this.data.type, this.data.containers), this.elementRef);
+            try {
+                this.loader.loadNextToLocation(toComponent(template, this.model, this.data.type, this.data.containers), this.elementRef);
+            } catch (e) {
+                console.warn(e);
+            }
         }
     }
 }
