@@ -11,7 +11,6 @@ import {MainPage} from "./views/main-page/main-page";
     template: "<StackLayout><page-router-outlet></page-router-outlet></StackLayout>"
 })
 @RouteConfig([
-    //{ path: "/", component: LoginPage, as: "Login" },
     { path: "/", component: MainPage, as: "MainPage" }
 ])
 export class AppComponent {}

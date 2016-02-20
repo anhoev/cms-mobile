@@ -17,7 +17,8 @@ export interface Element {
 
 export interface Type {
     list: any[],
-    template: string
+    template: string,
+    store:{[type: string]: {fn:any, serverFn:any, template:string}}
 }
 
 @Injectable()
@@ -36,7 +37,7 @@ export class Cms {
     public sync() {
         http.request({url: this.basePath + "/cms-mobile", method: "GET"}).then(res => {
             const {tree:content, Types} = JsonFn.parse(res.content.toString());
-            const basePath = knownFolders.currentApp().path + '/page';
+            const basePath = path.normalize(knownFolders.documents().path + '/page');
 
             function entry(path, node) {
                 if (node.file) {
@@ -53,19 +54,24 @@ export class Cms {
             }
 
             entry('', content);
-            File.fromPath(knownFolders.currentApp().path + '/data.json').writeTextSync(JsonFn.stringify(Types));
-            this.load();
+            File.fromPath(path.normalize(knownFolders.documents().path + '/data.json')).writeTextSync(JsonFn.stringify(Types));
+            this.load(true);
         })
     }
 
-    public load() {
-        const basePath = knownFolders.currentApp().path + '/page';
-        const indexPath = basePath + '/index.json';
+    public load(fromDocument = false) {
+        let basePath;
+        if (fromDocument) {
+            basePath = path.normalize(knownFolders.documents().path);
+        } else {
+            basePath = path.normalize(knownFolders.currentApp().path);
+        }
+        const indexPath = basePath + '/page/index.json';
         const index = File.fromPath(indexPath).readTextSync();
         const containerPage = JsonFn.parse(index);
         this.data = this.data || {containers: {}, types: {}};
         this.data.containers = containerPage.containers;
-        this.data.types = JsonFn.parse(File.fromPath(knownFolders.currentApp().path + '/data.json').readTextSync());
+        this.data.types = JsonFn.parse(File.fromPath(basePath + '/data.json').readTextSync());
         if (this.service) {
             this.service.data.containers = this.data.containers;
         }

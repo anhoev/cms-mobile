@@ -4,8 +4,6 @@ import * as dialogsModule from "ui/dialogs";
 import {TextField} from "ui/text-field";
 import {CmsContainer} from "./cms-container";
 import {Cms, Container, ContainerService} from "../../shared/cms/cms";
-
-import {ActionBarUtil} from "../../shared/utils/action-bar-util";
 const {File, knownFolders, path} = require('file-system');
 
 @Component({

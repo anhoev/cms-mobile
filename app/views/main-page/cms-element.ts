@@ -4,9 +4,10 @@ import {Cms, Container, ContainerService} from "../../shared/cms/cms";
 const _ = global._ = require('lodash');
 const http = require("http");
 import {CmsContainer} from './cms-container';
+import {CmsWrapper} from "./cms-wrapper";
 
 function toComponent(template:string, model:any, type:String, containers, directives = []) {
-    directives.push(NgStyle, CmsContainer);
+    directives.push(NgStyle, CmsContainer, CmsWrapper);
     @Component({
         selector: 'WrapLayout[dynamic-component]',
         template,
@@ -55,12 +56,8 @@ function toComponent(template:string, model:any, type:String, containers, direct
 export class CmsElement {
     @Input() data:any
     public model:any
-    loader:DynamicComponentLoader
-    elementRef:ElementRef
 
-    constructor(loader:DynamicComponentLoader, elementRef:ElementRef, private cms:Cms) {
-        this.loader = loader;
-        this.elementRef = elementRef;
+    constructor(private loader:DynamicComponentLoader, private elementRef:ElementRef, private cms:Cms) {
     }
 
     ngOnInit() {

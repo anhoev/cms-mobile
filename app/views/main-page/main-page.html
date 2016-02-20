@@ -1,6 +1,13 @@
+<page.actionBar>
+    <action-bar title="Page"></action-bar>
+</page.actionBar>
 <StackLayout>
-    <Button text="Sync" (tap)="cms.sync()"></Button>
+    <GridLayout columns="3*,2*" rows="auto">
+        <TextField [(ngModel)]="cms.basePath" col="0" ></TextField>
+        <Button text="Sync" (tap)="cms.sync()" col="1"></Button>
+    </GridLayout>
     <WrapLayout cms-container
                 *ngFor="#container of cms.data.containers"
-                [name]="container.name" ></WrapLayout>
+                [name]="container.name" >
+    </WrapLayout>
 </StackLayout>

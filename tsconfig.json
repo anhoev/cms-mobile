@@ -18,7 +18,7 @@
     "node_modules/tns-core-modules/tns-core-modules.base.d.ts"
   ],
   "filesGlob": [
-        "node_modules/tns-core-modules/tns-core-modules.base.d.ts",
+    "node_modules/tns-core-modules/tns-core-modules.base.d.ts",
     "app/**/*.ts"
   ],
   "exclude": [

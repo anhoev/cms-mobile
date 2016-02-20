@@ -10,11 +10,11 @@ import {CmsElement} from "./cms-element";
 export class CmsContainer {
     @Input() name:String;
 
-    constructor(@Optional() private containerService: ContainerService) {
+    constructor(@Optional() private containerService:ContainerService) {
     }
 
     ngOnInit() {
-        if (this.containerService){
+        if (this.containerService) {
             const container = _.find(this.containerService.data.containers, c => c.name === this.name);
             if (container) this.elements = container.elements;
         }

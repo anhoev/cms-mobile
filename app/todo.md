@@ -24,3 +24,6 @@
     * server App folder by server
     * class
 * cms-element : 
+
+* intergrate with git and facebook 
+    * invite
