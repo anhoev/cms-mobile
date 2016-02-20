@@ -1,12 +1,7 @@
 import {nativeScriptBootstrap} from "nativescript-angular/application";
-import {provide} from "angular2/core";
-import {ROUTER_PROVIDERS, LocationStrategy} from "angular2/router";
-import {NSLocationStrategy} from "./ns-location-strategy";
+import {HTTP_PROVIDERS} from "angular2/http";
+import {NS_ROUTER_PROVIDERS} from "nativescript-angular/router/ns-router";
 import {AppComponent} from "./app.component";
 import {Cms} from "./shared/cms/cms";
 
-nativeScriptBootstrap(AppComponent, [
-    ROUTER_PROVIDERS,
-    provide(LocationStrategy, { useClass: NSLocationStrategy }),
-    Cms
-]);
+nativeScriptBootstrap(AppComponent, [HTTP_PROVIDERS, NS_ROUTER_PROVIDERS,Cms]);
