@@ -4,4 +4,4 @@ import {NS_ROUTER_PROVIDERS} from "nativescript-angular/router/ns-router";
 import {AppComponent} from "./app.component";
 import {Cms} from "./shared/cms/cms";
 
-nativeScriptBootstrap(AppComponent, [HTTP_PROVIDERS, NS_ROUTER_PROVIDERS,Cms]);
+nativeScriptBootstrap(AppComponent, [HTTP_PROVIDERS, NS_ROUTER_PROVIDERS, Cms]);

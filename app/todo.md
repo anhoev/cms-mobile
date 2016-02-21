@@ -27,3 +27,5 @@
 
 * intergrate with git and facebook 
     * invite
+    * create game (giai do)
+    

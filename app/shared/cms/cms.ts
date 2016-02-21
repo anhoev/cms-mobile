@@ -1,4 +1,5 @@
 import {Injectable} from 'angular2/core';
+import {RouteConfig, ROUTER_DIRECTIVES, RouteRegistry} from 'angular2/router';
 const {File, Folder, knownFolders, path} = require('file-system');
 const http = require("http");
 const {toFile} = require('../utils/to-file');
@@ -16,6 +17,8 @@ export interface Element {
 }
 
 export interface Type {
+    fn:any,
+    serverFn:any,
     list: any[],
     template: string,
     store:{[type: string]: {fn:any, serverFn:any, template:string}}
@@ -55,13 +58,13 @@ export class Cms {
 
             entry('', content);
             File.fromPath(path.normalize(knownFolders.documents().path + '/data.json')).writeTextSync(JsonFn.stringify(Types));
-            this.load(true);
+            this.load();
         })
     }
 
-    public load(fromDocument = false) {
+    public load() {
         let basePath;
-        if (fromDocument) {
+        if (File.exists(knownFolders.documents().path + '/page/index.json')) {
             basePath = path.normalize(knownFolders.documents().path);
         } else {
             basePath = path.normalize(knownFolders.currentApp().path);

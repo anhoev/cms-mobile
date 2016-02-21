@@ -16,6 +16,8 @@ function toComponent(template:string, model:any, type:String, containers, direct
     })
     class DynamicComponent {
         public model
+        public fn
+        public serverFn
 
         constructor(private cms:Cms, private containerService:ContainerService) {
             containerService.data = {containers};

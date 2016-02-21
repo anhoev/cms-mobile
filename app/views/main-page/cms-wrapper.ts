@@ -15,6 +15,8 @@ function toComponent(template:string, name:String, fn, serverFn, containers = []
         providers: [ContainerService]
     })
     class DynamicComponent {
+        private fn
+        private serverFn
 
         constructor(private cms:Cms, private containerService:ContainerService) {
             containerService.data = {containers};
