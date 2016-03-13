@@ -1,33 +1,40 @@
 import {Injectable} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, RouteRegistry} from 'angular2/router';
 import {Type} from 'angular2/core';
-import {AppComponent} from '../../app.component';
 
 @Injectable()
 export class DynamicRouteConfigurator {
-    constructor(private registry:RouteRegistry) {
+    component:Type;
+
+    constructor() {
     }
 
-    addRoute(component: Type, route) {
-        let routeConfig = this.getRoutes(component);
+    setComponent(component:Type) {
+        this.component = component;
+    }
+
+    addRoutes(routes: Array) {
+        let routeConfig = this.getRoutes(this.component);
+        routes.forEach(route => routeConfig.configs.push(route));
+        this.updateRouteConfig(routeConfig);
+    }
+
+    addRoute(route) {
+        let routeConfig = this.getRoutes(this.component);
         routeConfig.configs.push(route);
-        this.updateRouteConfig(component, routeConfig);
-        this.registry.config(component, route);
+        this.updateRouteConfig(routeConfig);
     }
 
     removeRoute() {
         // need to touch private APIs - bad
     }
 
-    getRoutes(component: Type) {
-        return Reflect.getMetadata('annotations', component)
-            .filter(a => {
-                return a.constructor.name === 'RouteConfig';
-            }).pop();
+    getRoutes() {
+        return Reflect.getMetadata('annotations', this.component)
+            .filter(a => a.constructor.name === 'RouteConfig').pop();
     }
 
-    updateRouteConfig(component: Type, routeConfig) {
-        let annotations = Reflect.getMetadata('annotations', component);
+    updateRouteConfig(routeConfig) {
+        let annotations = Reflect.getMetadata('annotations', this.component);
         let routeConfigIndex = -1;
         for (let i = 0; i < annotations.length; i += 1) {
             if (annotations[i].constructor.name === 'RouteConfig') {
@@ -39,6 +46,6 @@ export class DynamicRouteConfigurator {
             throw new Error('No route metadata attached to the component');
         }
         annotations[routeConfigIndex] = routeConfig;
-        Reflect.defineMetadata('annotations', annotations, AppComponent);
+        Reflect.defineMetadata('annotations', annotations, this.component);
     }
 }

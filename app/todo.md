@@ -29,3 +29,9 @@
     * invite
     * create game (giai do)
     
+
+
+
+```
+<Button text="Link" class="link" [nsRouterLink]="['/MainPage']"></Button>
+```

@@ -1,24 +1,32 @@
-import {Component, DynamicComponentLoader, Input, Host, Optional} from "angular2/core";
+import {Component, DynamicComponentLoader, ElementRef, Input, Host, Optional, forwardRef} from "angular2/core";
 import {Cms, Container, ContainerService} from "../../shared/cms/cms";
-import {CmsElement} from './cms-element';
+import {toCmsElement} from './cms-element';
+import {Inject} from "angular2/core";
+import {CanReuse} from "angular2/router";
+import {Directive} from "angular2/core";
+import {provide} from "angular2/core";
+import {Injector} from "angular2/core";
+import {ViewContainerRef} from "angular2/core";
+const _ = require('lodash');
 
-@Component({
-    selector: "[cms-container]",
-    templateUrl: "views/main-page/cms-container.html",
-    directives: [CmsElement]
+@Directive({
+    selector: "[cmsContainer]"
 })
 export class CmsContainer {
-    @Input() name:String;
-    private elements
-
-    constructor(@Optional() private containerService:ContainerService) {
+    @Input('cmsContainer') name:String;
+    constructor(@Inject(forwardRef(() => ContainerService)) private containerService:ContainerService,
+                private loader:DynamicComponentLoader,
+                private elementRef:ElementRef) {
     }
 
     ngOnInit() {
         if (this.containerService) {
-            //noinspection TypeScriptUnresolvedVariable
             const container = _.find(this.containerService.data.containers, c => c.name === this.name);
-            if (container) this.elements = container.elements;
+            if (container){
+                for (const element of container.elements){
+                    this.loader.loadNextToLocation(toCmsElement(element), this.elementRef);
+                }
+            }
         }
     }
 }
