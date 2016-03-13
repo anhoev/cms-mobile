@@ -1,7 +1,8 @@
 import "reflect-metadata";
 import {Component,ViewEncapsulation} from "angular2/core";
 import {RouteConfig} from "angular2/router";
-import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router/ns-router";
+import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
+
 import {MainPage} from "./views/main-page/main-page";
 import {TestPage} from "./views/main-page/test-page";
 import {DynamicRouteConfigurator} from "./shared/route/dynamic-route";
