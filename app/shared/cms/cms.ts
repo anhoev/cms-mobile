@@ -1,14 +1,31 @@
+import {JsonFn} from "../../main";
+export let Types:{[type: string]: Type};
+export let cms:Cms;
 import {Injectable} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, RouteRegistry} from 'angular2/router';
 import {DynamicRouteConfigurator} from "../route/dynamic-route";
 const {File, Folder, knownFolders, path} = require('file-system');
 const http = require("http");
 const {toFile} = require('../utils/to-file');
-const JsonFn = require('json-fn');
 const CONTAINER_DIRECTORY = 'containerDirectory';
 import {createPage} from "../../views/main-page/main-page";
 import {Router} from "angular2/router";
-const _ = require('lodash');
+import {_} from "../../main"
+import {rawString} from "angular2/src/core/change_detection/codegen_facade";
+
+export interface Bind {
+    choice: string,
+    model: {parentKey:string, key:string},
+    array: any,
+    dynamic:any,
+    serverFn:any,
+    fn:any
+}
+
+export interface Binding {
+    binds: Bind[],
+    parentModel: any
+}
 
 export interface Container {
     name: string
@@ -30,6 +47,7 @@ export interface Type {
 }
 
 export enum StandardType {
+    Wrapper = 'Wrapper',
     Layout = 'Layout'
 }
 
@@ -45,7 +63,7 @@ export class Cms {
 
     constructor(private dynamicRouteConfigurator:DynamicRouteConfigurator/*, private router:Router*/) {
         //noinspection TypeScriptUnresolvedVariable
-        global.cms = this;
+        cms = global.cms = this;
     }
 
     public sync() {
@@ -93,7 +111,7 @@ export class Cms {
         const root = JsonFn.parse(File.fromPath(`${basePath}/root.json`).readTextSync());
         this.data.types = JsonFn.parse(File.fromPath(basePath + '/data.json').readTextSync());
         //noinspection TypeScriptUnresolvedVariable
-        global.Types = this.data.types;
+        Types = global.Types = this.data.types;
 
         const entry = node => {
             if (node.type === CONTAINER_DIRECTORY) {
@@ -142,6 +160,40 @@ export class Cms {
 
         walk(containers);
     }
+
+    public findFnByRef(type, ref) {
+        const fn = JsonFn.clone(Types[type].fn);
+        _.each(fn, (f, k) => fn[k] = f.bind(this.findByRef(type, ref)));
+        return fn;
+    }
+
+    public findFnByID(type, ID) {
+        const fn = JsonFn.clone(Types[type].fn);
+        _.each(fn, (f, k) => fn[k] = f.bind(_.find(Types[type].list, {ID})));
+        return fn;
+    }
+
+    public findByRef(type, ref) {
+        return _.find(Types[type].list, {_id: ref});
+    }
+
+    public findByID(type, ID) {
+        return _.find(Types[type].list, {ID});
+    }
+
+    public createModel(type, cb, content) {
+        http.request({
+            url: `${this.basePath}/cms-types/${type}`,
+            headers: {"Content-Type": "application/json"},
+            method: "POST",
+            content: JsonFn.stringify(content)
+        }).then(res => {
+            const {data:e} = JsonFn.parse(res.content.toString());
+            const ref = e._id;
+            Types[type].list.push(e);
+            cb(Types[type], ref, _.find(Types[type].list, {_id: ref}));
+        })
+    }
 }
 
 @Injectable()
@@ -156,4 +208,37 @@ export class ContainerService {
 export class FragmentService {
     public data:{
     } = {};
+}
+
+function post(link, body) {
+    return http.request({
+        url: cms.basePath + link,
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        content: JsonFn.stringify(body)
+    }).then(function (response) {
+        return {data: response.content.toString()};
+    })
+}
+
+export function injectFnAndServerFn(scope, type) {
+    scope.fn = {};
+    _.each(Types[type].fn, (f, k) => scope.fn[k] = f.bind(scope.model))
+
+    scope.serverFn = {};
+    _.each(Types[type].serverFn, (fn, k) => {
+        fn(post, scope, type, k);
+    })
+}
+
+export function injectFnAndServerFnByWrapper(scope, name) {
+    //noinspection TypeScriptUnresolvedVariable
+    const wrapper = _.find(Types.Wrapper.store, (wrapper, key) => key === name);
+    scope.fn = {};
+    _.each(wrapper.fn, (f, k) => scope.fn[k] = f.bind(scope.model))
+
+    scope.serverFn = {};
+    _.each(wrapper.serverFn, (fn, k) => {
+        fn(post, scope, name, k);
+    })
 }

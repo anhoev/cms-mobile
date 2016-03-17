@@ -6,9 +6,12 @@ import "./livesync-patch";
 import {Cms} from "./shared/cms/cms";
 import {DynamicRouteConfigurator} from "./shared/route/dynamic-route";
 import {enableProdMode} from 'angular2/core';
-declare const _ = require('lodash');
+export let _ = require('lodash');
 //noinspection TypeScriptUnresolvedVariable
-global.JsonFn = require('json-fn');
+global._ = _;
+export let JsonFn = require('./jsonfn');
+//noinspection TypeScriptUnresolvedVariable
+global.JsonFn = JsonFn;
 
 enableProdMode();
 nativeScriptBootstrap(AppComponent, [HTTP_PROVIDERS, NS_ROUTER_PROVIDERS, Cms, DynamicRouteConfigurator]);
