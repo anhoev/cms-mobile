@@ -22,8 +22,18 @@ Button, TextField {
 TextField {
   padding: 10;
   font-size: 13;
+  border-width:1;
+  border-color: #b9ecff;
 }
 #submit-button {
   background-color: #CB1D00;
   color: white;
+}
+
+.hide{
+  visibility: 'collapse'
+}
+
+.show{
+  visibility: 'visible'
 }

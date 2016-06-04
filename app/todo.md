@@ -29,9 +29,14 @@
     * invite
     * create game (giai do)
     
-
+* test gridlayout for container
 
 
 ```
 <Button text="Link" class="link" [nsRouterLink]="['/MainPage']"></Button>
 ```
+
+* update
+
+* refactor code to module
+

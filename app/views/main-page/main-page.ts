@@ -22,15 +22,17 @@ export function createPage() {
     @Component({
         selector: "main-page",
         template: `
-        <DockLayout stretchLastChild="true" >
-            <GridLayout dock="top" columns="3*,2*" rows="auto">
-                <TextField [(ngModel)]="cms.basePath" col="0" ></TextField>
-                <Button text="Sync" (tap)="cms.sync()" col="1"></Button>
+        <GridLayout rows="auto, *">
+            <GridLayout row="0" columns="3*,2*" rows="auto">
+                <TextField [(ngModel)]="cms.basePath" col="0"></TextField>
+                <Button text="Sync" (tap)="cms.sync()" col="1" style="color:red"></Button>
             </GridLayout>
-            <template ngFor #container [ngForOf]="containerService.data.containers">
-                <template [cmsContainer]="container.name" ></template>
-            </template>
-        </DockLayout >
+            <GridLayout row="1">
+                <template row="1" ngFor #container [ngForOf]="containerService.data.containers">
+                    <template [cmsContainer]="container.name" ></template>
+                </template>
+            </GridLayout>
+        </GridLayout >
         `,
         directives: [CmsContainer, NS_ROUTER_DIRECTIVES],
         providers: [forwardRef(() => ContainerService)]

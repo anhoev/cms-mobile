@@ -191,7 +191,7 @@ export class Cms {
             const {data:e} = JsonFn.parse(res.content.toString());
             const ref = e._id;
             Types[type].list.push(e);
-            cb(Types[type], ref, _.find(Types[type].list, {_id: ref}));
+            if (cb) cb(Types[type], ref, _.find(Types[type].list, {_id: ref}));
         })
     }
 }

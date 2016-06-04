@@ -18,7 +18,7 @@ import {StandardType} from "../../shared/cms/cms";
 function toComponent(template:string, name:String, containers = [], directives = []) {
     directives.push(NgStyle, CmsContainer, NS_ROUTER_DIRECTIVES, CmsFragment, CmsElement);
     @Component({
-        selector: 'WrapLayout[dynamic-component]',
+        selector: '[dynamic-component]',
         template,
         directives,
         providers: [ContainerService]
@@ -74,7 +74,6 @@ export class CmsWrapper {
                         });
                     }
                 } else {
-                    debugger;
                     const {BindType,layout, model} = element;
                     const template = `<StackLayout cmsElement [element]="{type:type,ref:element.element.model._id}"></StackLayout>`
                     this.loader.loadNextToLocation(toComponent(template), this.elementRef).then(ref => {

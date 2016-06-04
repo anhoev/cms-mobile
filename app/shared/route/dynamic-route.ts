@@ -1,14 +1,13 @@
 import {Injectable} from 'angular2/core';
-import {Type} from 'angular2/core';
 
 @Injectable()
 export class DynamicRouteConfigurator {
-    component:Type;
+    component;
 
     constructor() {
     }
 
-    setComponent(component:Type) {
+    setComponent(component) {
         this.component = component;
     }
 

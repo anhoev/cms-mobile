@@ -8,7 +8,7 @@ import {Cms} from "./shared/cms/cms";
 @Component({
   selector: "main",
   directives: [NS_ROUTER_DIRECTIVES],
-  template: "<StackLayout><page-router-outlet></page-router-outlet></StackLayout>"
+  template: "<GridLayout><page-router-outlet></page-router-outlet></GridLayout>"
 })
 @RouteConfig([])
 export class AppComponent {
