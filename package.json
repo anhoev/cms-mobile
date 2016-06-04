@@ -9,7 +9,7 @@
 	"keywords": [
 		"NativeScript"
 	],
-	"author": "TJ VanToll <tj.vantoll@gmail.com> (http://tjvantoll.com/)",
+	"author": "TJ VanToll <tj.vantoll@gmail.com> (https://www.tjvantoll.com/)",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/nativescript/sample-Groceries/issues"
@@ -17,14 +17,22 @@
 	"homepage": "https://github.com/nativescript/sample-Groceries/groceries",
 	"nativescript": {
 		"id": "org.nativescript.groceries",
-		"tns-android": {
-			"version": "1.7.0"
-		},
 		"tns-ios": {
-			"version": "1.7.0"
+			"version": "2.0.0"
+		},
+		"tns-android": {
+			"version": "2.0.0"
 		}
 	},
 	"dependencies": {
+		"@angular/common": "2.0.0-rc.1",
+		"@angular/compiler": "2.0.0-rc.1",
+		"@angular/core": "2.0.0-rc.1",
+		"@angular/http": "2.0.0-rc.1",
+		"@angular/platform-browser": "2.0.0-rc.1",
+		"@angular/platform-browser-dynamic": "2.0.0-rc.1",
+		"@angular/platform-server": "2.0.0-rc.1",
+		"@angular/router-deprecated": "2.0.0-rc.1",
 		"email-validator": "^1.0.4",
 		"nativescript-social-share": "^1.1.2",
 		"tns-core-modules": "^1.7.0",
@@ -37,14 +45,21 @@
 		"reflect-metadata": "0.1.2",
 		"rxjs": "5.0.0-beta.2",
 		"zone.js": "0.5.15",
-		"util": "^0.10.3",
 		"json-fn": "^0.60.0",
 		"lodash": "^4.3.0",
 		"path": "^0.12.7"
 	},
 	"devDependencies": {
-		"nativescript-dev-typescript": "^0.3.1",
-		"shelljs": "^0.5.3",
-		"typescript": "^1.8.2"
+		"babel-traverse": "6.8.0",
+		"babel-types": "6.8.1",
+		"babylon": "6.8.0",
+		"filewalker": "0.1.2",
+		"jasmine-core": "^2.4.1",
+		"karma": "^0.13.22",
+		"karma-jasmine": "^1.0.2",
+		"karma-nativescript-launcher": "^0.4.0",
+		"lazy": "1.0.11",
+		"nativescript-dev-typescript": "^0.3.2",
+		"typescript": "^1.8.10"
 	}
 }
