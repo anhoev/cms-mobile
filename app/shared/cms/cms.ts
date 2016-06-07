@@ -1,17 +1,13 @@
-import {JsonFn} from "../../main";
+import {JsonFn, _} from "../../main";
+import {Injectable} from "@angular/core";
+import {DynamicRouteConfigurator} from "../route/dynamic-route";
+import {createPage} from "../../views/main-page/main-page";
 export let Types:{[type: string]: Type};
 export let cms:Cms;
-import {Injectable} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, RouteRegistry} from 'angular2/router';
-import {DynamicRouteConfigurator} from "../route/dynamic-route";
 const {File, Folder, knownFolders, path} = require('file-system');
 const http = require("http");
 const {toFile} = require('../utils/to-file');
 const CONTAINER_DIRECTORY = 'containerDirectory';
-import {createPage} from "../../views/main-page/main-page";
-import {Router} from "angular2/router";
-import {_} from "../../main"
-import {rawString} from "angular2/src/core/change_detection/codegen_facade";
 
 export interface Bind {
     choice: string,
@@ -110,6 +106,7 @@ export class Cms {
         }
         const root = JsonFn.parse(File.fromPath(`${basePath}/root.json`).readTextSync());
         this.data.types = JsonFn.parse(File.fromPath(basePath + '/data.json').readTextSync());
+
         //noinspection TypeScriptUnresolvedVariable
         Types = global.Types = this.data.types;
 

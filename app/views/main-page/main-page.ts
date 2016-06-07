@@ -1,20 +1,9 @@
-import {Component, DynamicComponentLoader, ElementRef, TemplateRef} from "angular2/core";
-import {Router} from "angular2/router";
+import {Component, forwardRef, Inject} from "@angular/core";
+import {RouteData} from "@angular/router-deprecated";
 import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
 import {TextField} from "ui/text-field";
 import {CmsContainer} from "./cms-container";
-import {Cms, Container, ContainerService} from "../../shared/cms/cms";
-import {CanReuse} from "angular2/router";
-import {ComponentInstruction} from "angular2/router";
-import {OnReuse} from "angular2/router";
-import {RouteData} from "angular2/router";
-import {forwardRef} from "angular2/core";
-import {Inject} from "angular2/core";
-import {_} from "../../main";
-import {ComponentRef} from "angular2/core";
-import {Injector} from "angular2/core";
-import {provide} from "angular2/core";
-import {CmsContainer} from "./cms-container";
+import {Cms, ContainerService} from "../../shared/cms/cms";
 
 const {File, knownFolders, path} = require('file-system');
 
@@ -28,7 +17,7 @@ export function createPage() {
                 <Button text="Sync" (tap)="cms.sync()" col="1" style="color:red"></Button>
             </GridLayout>
             <GridLayout row="1">
-                <template row="1" ngFor #container [ngForOf]="containerService.data.containers">
+                <template row="1" ngFor let-container [ngForOf]="containerService.data.containers">
                     <template [cmsContainer]="container.name" ></template>
                 </template>
             </GridLayout>

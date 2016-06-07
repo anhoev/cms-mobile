@@ -1,24 +1,20 @@
 {
-	"name": "Groceries",
+	"name": "cmsmon-mobile",
 	"version": "1.0.0",
-	"description": "A NativeScript-built iOS and Android app for managing grocery lists",
+	"description": "Cmsmon mobile",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/nativescript/sample-Groceries.git"
+		"url": "https://github.com/anhoev/cmsmon-mobile.git"
 	},
 	"keywords": [
 		"NativeScript"
 	],
-	"author": "TJ VanToll <tj.vantoll@gmail.com> (https://www.tjvantoll.com/)",
+	"author": "Tran Tuan Anh",
 	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/nativescript/sample-Groceries/issues"
-	},
-	"homepage": "https://github.com/nativescript/sample-Groceries/groceries",
 	"nativescript": {
 		"id": "org.nativescript.groceries",
 		"tns-ios": {
-			"version": "2.0.0"
+			"version": "2.0.1"
 		},
 		"tns-android": {
 			"version": "2.0.0"
@@ -34,17 +30,12 @@
 		"@angular/platform-server": "2.0.0-rc.1",
 		"@angular/router-deprecated": "2.0.0-rc.1",
 		"email-validator": "^1.0.4",
-		"nativescript-social-share": "^1.1.2",
-		"tns-core-modules": "^1.7.0",
-		"angular2": "2.0.0-beta.9",
-		"nativescript-angular": "0.0.36",
-		"parse5": "1.4.2",
-		"punycode": "1.3.2",
-		"querystring": "0.2.0",
-		"url": "0.10.3",
+		"nativescript-angular": "0.1.6",
+		"nativescript-iqkeyboardmanager": "^1.0.1",
+		"nativescript-social-share": "^1.1.3",
+		"nativescript-unit-test-runner": "^0.3.3",
+		"tns-core-modules": "2.0.1",
 		"reflect-metadata": "0.1.2",
-		"rxjs": "5.0.0-beta.2",
-		"zone.js": "0.5.15",
 		"json-fn": "^0.60.0",
 		"lodash": "^4.3.0",
 		"path": "^0.12.7"

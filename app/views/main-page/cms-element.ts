@@ -1,32 +1,31 @@
-import {Component, DynamicComponentLoader, Input, Output, ElementRef, forwardRef} from "angular2/core";
-import {NgStyle} from 'angular2/common';
-import {Cms, Container, ContainerService} from "../../shared/cms/cms";
-const http = require("http");
-import {CmsContainer} from './cms-container';
+import {
+    Component,
+    Input,
+    forwardRef,
+    Inject,
+    DoCheck,
+    KeyValueDiffers,
+    PipeTransform,
+    Pipe,
+    ViewContainerRef,
+    ComponentRef,
+    ComponentResolver,
+    ComponentFactory
+} from "@angular/core";
+import {NgStyle} from "@angular/common";
+import {Cms, ContainerService, Types, injectFnAndServerFn, StandardType} from "../../shared/cms/cms";
+import {CmsContainer} from "./cms-container";
 import {CmsWrapper} from "./cms-wrapper";
-import {Inject} from "angular2/core";
 import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
 import {CmsFragment} from "./cms-fragment";
-import {DoCheck} from "angular2/core";
-import {KeyValueDiffers} from "angular2/core";
-import {KeyValueDiffer} from "angular2/core";
-import {isPresent} from "angular2/src/facade/lang";
-import {DefaultKeyValueDiffer} from "angular2/src/core/change_detection/differs/default_keyvalue_differ";
-import {ComponentRef} from "angular2/core";
-import {OnInit} from "angular2/core";
-import {AfterViewInit} from "angular2/core";
-import {Bind} from "../../shared/cms/cms";
-import {Types} from "../../shared/cms/cms";
-import {injectFnAndServerFn} from "../../shared/cms/cms";
+import {isPresent} from "@angular/core/src/facade/lang";
+import {DefaultKeyValueDiffer} from "@angular/core/src/change_detection/differs/default_keyvalue_differ";
+const http = require("http");
 const _ = require('lodash');
-import {Binding} from "../../shared/cms/cms";
-import {StandardType} from "../../shared/cms/cms";
-import {PipeTransform} from "angular2/core";
-import {Pipe} from "angular2/core";
 
 function toComponent(template:string, element:any,
                      directives = []) {
-    const {containers,type,binding,ref}  = element;
+    const {containers, type, binding, ref}  = element;
     const model = _.find(Types[element.type].list, {_id: ref});
     directives.push(NgStyle, CmsContainer, CmsWrapper, NS_ROUTER_DIRECTIVES, CmsFragment, CmsElement);
     @Component({
@@ -119,12 +118,14 @@ export class CmsElement implements DoCheck {
     ref:string;
 
 
-    constructor(private loader:DynamicComponentLoader, private elementRef:ElementRef,
-                @Inject(forwardRef(() => Cms)) private cms:Cms) {
+    constructor(@Inject(forwardRef(() => Cms)) private cms:Cms,private viewContainer: ViewContainerRef,
+                private resolver:ComponentResolver) {
+        console.log('cms-element');
     }
 
     ngOnInit() {
         if (this.element && !this.oneTime) {
+            console.log('cms-element init: ' + this.element.ref);
             this.ref = this.element.ref;
             this.oneTime = true;
             this.render();
@@ -133,7 +134,8 @@ export class CmsElement implements DoCheck {
 
     render() {
         try {
-            if (this.element.type && _.find(Types[this.element.type].list, {_id:this.element.ref})) {
+            if (this.element.type && _.find(Types[this.element.type].list, {_id: this.element.ref})) {
+                console.log('element :' + this.element.type);
                 let template:string = Types[this.element.type].template;
                 let isList = false;
                 const {binding} = this.element;
@@ -149,15 +151,19 @@ export class CmsElement implements DoCheck {
                                 Types[StandardType.Layout].fn.getTreeWithBinding(containers, bind.array.bind, item, binding.BindType);
                                 return {type: this.element.type, ref: this.element.ref, containers, binding: {}};
                             }
-                            template = `<StackLayout *ngFor="#item of items" cmsElement [element]="item | prepareElement"></StackLayout>`;
+                            template = `<StackLayout *ngFor="let item of items" cmsElement [element]="item | prepareElement"></StackLayout>`;
                             if (binding.parentModel[parentKey])
-                                this.loader.loadNextToLocation(toArrayComponent(template, binding.parentModel[parentKey], prepareElement), this.elementRef)
-                                    .then(ref => this.compRef = ref);
+                                this.resolver.resolveComponent(toArrayComponent(template, binding.parentModel[parentKey], prepareElement)).then((factory:ComponentFactory<any>) => {
+                                    this.compRef = this.viewContainer.createComponent(factory);
+                                });
                         }
                     }
                 }
 
-                if (!isList) this.loader.loadNextToLocation(toComponent(template, this.element), this.elementRef).then(ref => this.compRef = ref);
+                if (!isList)
+                    this.resolver.resolveComponent(toComponent(template, this.element)).then((factory:ComponentFactory<any>) => {
+                        this.compRef = this.viewContainer.createComponent(factory);
+                    });
             }
         } catch (e) {
             console.warn(e);

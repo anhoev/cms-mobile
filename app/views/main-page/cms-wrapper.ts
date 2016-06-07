@@ -1,19 +1,13 @@
-import {Component, DynamicComponentLoader, Input, Output, ElementRef} from "angular2/core";
-import {NgStyle} from 'angular2/common';
-import {Cms, Container, ContainerService} from "../../shared/cms/cms";
-const http = require("http");
-import {CmsContainer} from './cms-container';
-import {forwardRef} from "angular2/core";
-import {Inject} from "angular2/core";
+import {Component, DynamicComponentLoader, Input, ElementRef, forwardRef, Inject} from "@angular/core";
+import {NgStyle} from "@angular/common";
+import {Cms, ContainerService, Types, injectFnAndServerFnByWrapper} from "../../shared/cms/cms";
+import {CmsContainer} from "./cms-container";
 import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
-import {Router} from "angular2/router";
+import {Router} from "@angular/router-deprecated";
 import {CmsFragment} from "./cms-fragment";
-import {Types} from "../../shared/cms/cms";
-import {injectFnAndServerFn} from "../../shared/cms/cms";
-import {injectFnAndServerFnByWrapper} from "../../shared/cms/cms";
 import {_} from "../../main";
 import {CmsElement} from "./cms-element";
-import {StandardType} from "../../shared/cms/cms";
+const http = require("http");
 
 function toComponent(template:string, name:String, containers = [], directives = []) {
     directives.push(NgStyle, CmsContainer, NS_ROUTER_DIRECTIVES, CmsFragment, CmsElement);

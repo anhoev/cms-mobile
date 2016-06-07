@@ -1,8 +1,8 @@
 {
-  "path": "page.jade",
+  "path": "page.html",
   "containers": [
     {
-      "name": "buttons",
+      "name": "main",
       "elements": [
         {
           "type": "StackLayout",

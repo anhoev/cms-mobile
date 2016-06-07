@@ -6,10 +6,10 @@ import {DynamicRouteConfigurator} from "./shared/route/dynamic-route";
 import {Cms} from "./shared/cms/cms";
 
 @Component({
-  selector: "main",
-  directives: [NS_ROUTER_DIRECTIVES],
-  providers: [NS_ROUTER_PROVIDERS],
-  template: "<page-router-outlet></page-router-outlet>"
+    selector: "main",
+    directives: [NS_ROUTER_DIRECTIVES],
+    providers: [NS_ROUTER_PROVIDERS],
+    template: "<page-router-outlet></page-router-outlet>"
 })
 @RouteConfig([])
 export class AppComponent {

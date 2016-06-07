@@ -1,9 +1,9 @@
-import {Component, DynamicComponentLoader, Input, Output, ElementRef, forwardRef} from "angular2/core";
-import {NgStyle} from 'angular2/common';
+import {Component, DynamicComponentLoader, Input, Output, ElementRef, forwardRef} from "@angular/core";
+import {NgStyle} from '@angular/common';
 import {Cms, Container, ContainerService} from "../../shared/cms/cms";
 import {CmsContainer} from './cms-container';
 import {CmsWrapper} from "./cms-wrapper";
-import {Inject} from "angular2/core";
+import {Inject} from "@angular/core";
 import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
 import {_} from "../../main"
 import {StandardType} from "../../shared/cms/cms";
@@ -33,6 +33,7 @@ export class CmsFragment {
         try {
             this.Layout = Types[StandardType.Layout];
             const layout = _.find(this.Layout.list, layout => layout.ID === this.cmsFragment);
+            //noinspection TypeScriptUnresolvedVariable
             let {containers, bind, BindType} = this.save ? _.find(layout.SAVE, save => save.name === this.save) : layout.SAVE[0];
             this.BindType = BindType;
             this.bind = bind;
