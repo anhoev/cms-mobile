@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "outDir": "app",
-        "rootDir": "app",
+        "outDir": "./app",
+        "rootDir": "./app",
         "module": "commonjs",
         "target": "es5",
         "inlineSourceMap": true,
@@ -9,9 +9,8 @@
         "removeComments": false,
         "emitDecoratorMetadata": true
     },
-    "files": ["index.d.ts"],
     "exclude": [
-        "node_modules",
-        "platforms"
+        "./node_modules",
+        "./platforms"
     ]
 }
