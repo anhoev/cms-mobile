@@ -1,0 +1,41 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var core_1 = require("@angular/core");
+var router_1 = require("nativescript-angular/router");
+var cms_container_1 = require("./cms-container");
+var cms_1 = require("../../shared/cms/cms");
+var _a = require('file-system'), File = _a.File, knownFolders = _a.knownFolders, path = _a.path;
+function createPage() {
+    var MainPage = (function () {
+        function MainPage(routeData, cms, containerService) {
+            this.routeData = routeData;
+            this.cms = cms;
+            this.containerService = containerService;
+            console.log('create page');
+            var path = routeData.get('path');
+            containerService.data.containers = this.cms.data.containerPage[path];
+            this.cms.services[path] = this.containerService;
+        }
+        MainPage = __decorate([
+            core_1.Component({
+                selector: "main-page",
+                template: "\n        <GridLayout rows=\"auto, *\">\n            <GridLayout row=\"0\" columns=\"3*,2*\" rows=\"auto\">\n                <TextField [(ngModel)]=\"cms.basePath\" col=\"0\"></TextField>\n                <Button text=\"Sync\" (tap)=\"cms.sync()\" col=\"1\" style=\"color:red\"></Button>\n            </GridLayout>\n            <GridLayout row=\"1\">\n                <template row=\"1\" ngFor let-container [ngForOf]=\"containerService.data.containers\">\n                    <template [cmsContainer]=\"container.name\" ></template>\n                </template>\n            </GridLayout>\n        </GridLayout >\n        ",
+                directives: [cms_container_1.CmsContainer, router_1.NS_ROUTER_DIRECTIVES],
+                providers: [core_1.forwardRef(function () { return cms_1.ContainerService; })]
+            }),
+            __param(1, core_1.Inject(core_1.forwardRef(function () { return cms_1.Cms; }))),
+            __param(2, core_1.Inject(core_1.forwardRef(function () { return cms_1.ContainerService; })))
+        ], MainPage);
+        return MainPage;
+    }());
+    return MainPage;
+}
+exports.createPage = createPage;

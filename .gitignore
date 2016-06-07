@@ -1,8 +1,6 @@
 .vscode/
 npm-debug.log
 
-app/**/*.js
-!app/jsonfn.js
 !app/shared/everlive.all.min.js
 hooks/
 lib/

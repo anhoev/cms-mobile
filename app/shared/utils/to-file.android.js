@@ -1,0 +1,22 @@
+"use strict";
+function toFile(destinationFilePath, content) {
+    var data = android.util.Base64.decode(content, android.util.Base64.DEFAULT);
+    var fs = require("file-system");
+    var stream;
+    try {
+        var javaFile = new java.io.File(destinationFilePath);
+        stream = new java.io.FileOutputStream(javaFile);
+        stream.write(data);
+        return fs.File.fromPath(destinationFilePath);
+    }
+    catch (exception) {
+        throw new Error("Cannot save file with path: " + destinationFilePath + ".");
+    }
+    finally {
+        if (stream) {
+            stream.close();
+        }
+    }
+}
+exports.toFile = toFile;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidG8tZmlsZS5hbmRyb2lkLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsidG8tZmlsZS5hbmRyb2lkLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFFQSxnQkFBdUIsbUJBQTBCLEVBQUUsT0FBVztJQUMxRCxJQUFNLElBQUksR0FBRyxPQUFPLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxNQUFNLENBQUMsT0FBTyxFQUFFLE9BQU8sQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDLE9BQU8sQ0FBQyxDQUFDO0lBQzlFLElBQUksRUFBRSxHQUFtQixPQUFPLENBQUMsYUFBYSxDQUFDLENBQUM7SUFDaEQsSUFBSSxNQUErQixDQUFDO0lBQ3BDLElBQUksQ0FBQztRQUNELElBQUksUUFBUSxHQUFHLElBQUksSUFBSSxDQUFDLEVBQUUsQ0FBQyxJQUFJLENBQUMsbUJBQW1CLENBQUMsQ0FBQztRQUNyRCxNQUFNLEdBQUcsSUFBSSxJQUFJLENBQUMsRUFBRSxDQUFDLGdCQUFnQixDQUFDLFFBQVEsQ0FBQyxDQUFDO1FBQ2hELE1BQU0sQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLENBQUM7UUFDbkIsTUFBTSxDQUFDLEVBQUUsQ0FBQyxJQUFJLENBQUMsUUFBUSxDQUFDLG1CQUFtQixDQUFDLENBQUM7SUFDakQsQ0FDQTtJQUFBLEtBQUssQ0FBQyxDQUFDLFNBQVMsQ0FBQyxDQUFDLENBQUM7UUFDZixNQUFNLElBQUksS0FBSyxDQUFDLGlDQUErQixtQkFBbUIsTUFBRyxDQUFDLENBQUM7SUFDM0UsQ0FBQztZQUNPLENBQUM7UUFDTCxFQUFFLENBQUMsQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDO1lBQ1QsTUFBTSxDQUFDLEtBQUssRUFBRSxDQUFDO1FBQ25CLENBQUM7SUFDTCxDQUFDO0FBQ0wsQ0FBQztBQWxCZSxjQUFNLFNBa0JyQixDQUFBIn0=
