@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "./app",
-        "rootDir": "./app",
+        "rootDir": "app",
         "module": "commonjs",
         "target": "es5",
         "inlineSourceMap": true,
@@ -10,7 +9,7 @@
         "emitDecoratorMetadata": true
     },
     "exclude": [
-        "./node_modules",
-        "./platforms"
+        "node_modules",
+        "platforms"
     ]
 }
