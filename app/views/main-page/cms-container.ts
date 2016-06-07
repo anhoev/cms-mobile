@@ -25,11 +25,9 @@ export class CmsContainer {
 
     ngOnInit() {
         if (this.containerService) {
-            console.log('cms-container');
             const container = _.find(this.containerService.data.containers, c => c.name === this.name);
             if (container) {
                 for (const element of container.elements) {
-                    console.log('cms-container: load element' + JSON.stringify(element));
                     this.resolver.resolveComponent(CmsElement).then((factory:ComponentFactory<any>) => {
                         let ref:ComponentRef<CmsElement> = this.viewContainer.createComponent(factory);
                         ref.instance.element = element;

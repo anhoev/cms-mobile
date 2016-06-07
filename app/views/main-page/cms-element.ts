@@ -120,12 +120,10 @@ export class CmsElement implements DoCheck {
 
     constructor(@Inject(forwardRef(() => Cms)) private cms:Cms,private viewContainer: ViewContainerRef,
                 private resolver:ComponentResolver) {
-        console.log('cms-element');
     }
 
     ngOnInit() {
         if (this.element && !this.oneTime) {
-            console.log('cms-element init: ' + this.element.ref);
             this.ref = this.element.ref;
             this.oneTime = true;
             this.render();
