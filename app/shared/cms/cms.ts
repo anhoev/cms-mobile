@@ -8,6 +8,8 @@ const {File, Folder, knownFolders, path} = require('file-system');
 const http = require("http");
 const {toFile} = require('../utils/to-file');
 const CONTAINER_DIRECTORY = 'containerDirectory';
+const cache = require('nativescript-cache');
+
 
 export interface Bind {
     choice: string,
@@ -39,7 +41,8 @@ export interface Type {
     serverFn:any,
     list: any[],
     template: string,
-    store:{[type: string]: {fn:any, serverFn:any, template:string}}
+    store:{[type: string]: {fn:any, serverFn:any, template:string}},
+    info: any
 }
 
 export enum StandardType {
@@ -56,6 +59,7 @@ export class Cms {
     } = {containerPage: {}, types: {}};
     public services:{[type: string]: ContainerService} = {};
     public routes:{path:string, component:any, as:string}[] = [];
+    public cache = cache;
 
     constructor(private dynamicRouteConfigurator:DynamicRouteConfigurator/*, private router:Router*/) {
         //noinspection TypeScriptUnresolvedVariable
@@ -138,6 +142,18 @@ export class Cms {
 
         console.log(JSON.stringify(this.routes));
         this.dynamicRouteConfigurator.addRoutes(this.routes);
+
+        // get data from cache (if element is not viewelement)
+
+        for (let [type,Type] of Types) {
+            if (Type.info.isViewElement) {
+                try {
+                    Type.list = JsonFn.parse(cache.get(`Types.${type}`)).list;
+                } catch (e) {
+                    // do nothing
+                }
+            }
+        }
     }
 
     public walkInContainers(containers, cb) {

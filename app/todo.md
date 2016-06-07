@@ -39,3 +39,5 @@
 * update
 
 * refactor code to module (processing...)
+
+* another way to save data (better than file)

@@ -9,6 +9,7 @@
         "removeComments": false,
         "emitDecoratorMetadata": true
     },
+    "files": ["index.d.ts"],
     "exclude": [
         "node_modules",
         "platforms"
