@@ -1,13 +1,13 @@
 {
 	"name": "cmsmon-mobile",
-	"version": "1.0.0",
+	"version": "0.0.0",
 	"description": "Cmsmon mobile",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/anhoev/cmsmon-mobile.git"
 	},
 	"keywords": [
-		"NativeScript"
+		"cmsmon-mobile"
 	],
 	"author": "Tran Tuan Anh",
 	"license": "MIT",
