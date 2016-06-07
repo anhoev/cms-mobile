@@ -21,8 +21,6 @@
 		}
 	},
 	"dependencies": {
-	},
-	"devDependencies": {
 		"@angular/common": "2.0.0-rc.1",
 		"@angular/compiler": "2.0.0-rc.1",
 		"@angular/core": "2.0.0-rc.1",
@@ -41,7 +39,9 @@
 		"nativescript-unit-test-runner": "^0.3.3",
 		"path": "^0.12.7",
 		"reflect-metadata": "0.1.2",
-		"tns-core-modules": "2.0.1",
+		"tns-core-modules": "2.0.1"
+	},
+	"devDependencies": {
 		"babel-traverse": "6.8.0",
 		"babel-types": "6.8.1",
 		"babylon": "6.8.0",
