@@ -10,7 +10,7 @@ import {
 } from "@angular/core";
 import {ContainerService} from "../../shared/cms/cms";
 import {CmsElement} from "./cms-element";
-import {_} from "../../main";
+import {_} from "../../global.lib";
 
 @Directive({
     selector: "[cmsContainer]"

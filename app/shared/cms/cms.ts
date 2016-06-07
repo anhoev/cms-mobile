@@ -1,4 +1,4 @@
-import {JsonFn, _} from "../../main";
+import {JsonFn, _} from "../../global.lib";
 import {Injectable} from "@angular/core";
 import {DynamicRouteConfigurator} from "../route/dynamic-route";
 import {createPage} from "../../views/main-page/main-page";

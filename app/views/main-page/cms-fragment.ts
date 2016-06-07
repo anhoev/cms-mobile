@@ -5,7 +5,7 @@ import {
     ComponentRef
 } from "@angular/core";
 import {Cms, Container, StandardType, Types} from "../../shared/cms/cms";
-import {_} from "../../main";
+import {_} from "../../global.lib";
 import {CmsElement} from "./cms-element";
 
 

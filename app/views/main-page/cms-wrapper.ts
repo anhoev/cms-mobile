@@ -14,7 +14,7 @@ import {CmsContainer} from "./cms-container";
 import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
 import {Router} from "@angular/router-deprecated";
 import {CmsFragment} from "./cms-fragment";
-import {_} from "../../main";
+import {_} from "../../global.lib";
 import {CmsElement} from "./cms-element";
 const http = require("http");
 
