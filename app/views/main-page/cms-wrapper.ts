@@ -20,7 +20,7 @@ const http = require("http");
 
 function toComponent(template:string, name:String, containers = [], directives = []) {
     const Type = Types['Wrapper'];
-    const wrapper = _.find(Type.store, (wrapper, name) => name === name);
+    const wrapper = _.find(Type.store, (wrapper, k) => k === name);
     if (wrapper.directives) directives.push(...wrapper.directives);
     directives.push(NgStyle, CmsContainer, NS_ROUTER_DIRECTIVES, CmsFragment, CmsElement);
     @Component({
