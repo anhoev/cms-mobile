@@ -1,0 +1,8 @@
+"use strict";
+exports._ = require('lodash');
+//noinspection TypeScriptUnresolvedVariable
+global._ = exports._;
+exports.JsonFn = require('./jsonfn');
+//noinspection TypeScriptUnresolvedVariable
+global.JsonFn = exports.JsonFn;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2xvYmFsLmxpYi5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbImdsb2JhbC5saWIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFXLFNBQUMsR0FBRyxPQUFPLENBQUMsUUFBUSxDQUFDLENBQUM7QUFDakMsMkNBQTJDO0FBQzNDLE1BQU0sQ0FBQyxDQUFDLEdBQUcsU0FBQyxDQUFDO0FBQ0YsY0FBTSxHQUFHLE9BQU8sQ0FBQyxVQUFVLENBQUMsQ0FBQztBQUN4QywyQ0FBMkM7QUFDM0MsTUFBTSxDQUFDLE1BQU0sR0FBRyxjQUFNLENBQUMifQ==

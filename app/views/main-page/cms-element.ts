@@ -28,6 +28,7 @@ function toComponent(template:string, element:any,
     const {containers, type, binding, ref}  = element;
     const model = _.find(Types[element.type].list, {_id: ref});
     directives.push(NgStyle, CmsContainer, CmsWrapper, NS_ROUTER_DIRECTIVES, CmsFragment, CmsElement);
+    if (Types[element.type].directives) directives.push(...Types[element.type].directives);
     @Component({
         selector: '[dynamic-component]',
         template,
@@ -118,7 +119,7 @@ export class CmsElement implements DoCheck {
     ref:string;
 
 
-    constructor(@Inject(forwardRef(() => Cms)) private cms:Cms,private viewContainer: ViewContainerRef,
+    constructor(@Inject(forwardRef(() => Cms)) private cms:Cms, private viewContainer:ViewContainerRef,
                 private resolver:ComponentResolver) {
     }
 

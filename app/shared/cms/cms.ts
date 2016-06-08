@@ -38,6 +38,7 @@ export interface Element {
 }
 
 export interface Type {
+    directives:any[];
     fn:any,
     serverFn:any,
     list:any[],
@@ -61,6 +62,7 @@ export class Cms {
     public services:{[type:string]:ContainerService} = {};
     public routes:{path:string, component:any, as:string}[] = [];
     public cache = cache;
+    public initTypes;
 
     constructor(private dynamicRouteConfigurator:DynamicRouteConfigurator/*, private router:Router*/) {
         //noinspection TypeScriptUnresolvedVariable
@@ -114,6 +116,8 @@ export class Cms {
 
         //noinspection TypeScriptUnresolvedVariable
         Types = global.Types = this.data.types;
+        
+        if (this.initTypes) this.initTypes(); 
 
         const entry = node => {
             if (node.type === CONTAINER_DIRECTORY) {
