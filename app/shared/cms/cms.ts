@@ -2,47 +2,48 @@ import {JsonFn, _} from "../../global.lib";
 import {Injectable} from "@angular/core";
 import {DynamicRouteConfigurator} from "../route/dynamic-route";
 import {createPage} from "../../views/main-page/main-page";
-export let Types:{[type: string]: Type};
+export let Types:{[type:string]:Type};
 export let cms:Cms;
 const {File, Folder, knownFolders, path} = require('file-system');
 const http = require("http");
 const {toFile} = require('../utils/to-file');
 const CONTAINER_DIRECTORY = 'containerDirectory';
 const cache = require('nativescript-cache');
+const base64 = require('base-64');
 
 
 export interface Bind {
-    choice: string,
-    model: {parentKey:string, key:string},
-    array: any,
+    choice:string,
+    model:{parentKey:string, key:string},
+    array:any,
     dynamic:any,
     serverFn:any,
     fn:any
 }
 
 export interface Binding {
-    binds: Bind[],
-    parentModel: any
+    binds:Bind[],
+    parentModel:any
 }
 
 export interface Container {
-    name: string
-    elements: Element[]
+    name:string
+    elements:Element[]
 }
 
 export interface Element {
-    type: string
-    ref: string
-    _data: any
+    type:string
+    ref:string
+    _data:any
 }
 
 export interface Type {
     fn:any,
     serverFn:any,
-    list: any[],
-    template: string,
-    store:{[type: string]: {fn:any, serverFn:any, template:string}},
-    info: any
+    list:any[],
+    template:string,
+    store:{[type:string]:{fn:any, serverFn:any, template:string}},
+    info:any
 }
 
 export enum StandardType {
@@ -54,10 +55,10 @@ export enum StandardType {
 export class Cms {
     public basePath = 'http://localhost:8888';
     public data:{
-        types:{[type: string]: Type},
-        containerPage: {[path: string]: Container[]}
+        types:{[type:string]:Type},
+        containerPage:{[path:string]:Container[]}
     } = {containerPage: {}, types: {}};
-    public services:{[type: string]: ContainerService} = {};
+    public services:{[type:string]:ContainerService} = {};
     public routes:{path:string, component:any, as:string}[] = [];
     public cache = cache;
 
@@ -74,7 +75,12 @@ export class Cms {
 
             function walk(path, node, _node) {
                 if (node.file) {
-                    toFile(`${basePath}/${path}${path !== '' ? '/' : ''}${node.text}`, node.file);
+                    if (node.text.endsWith('index.json')) {
+                        console.log(`cms.page/${path}${path !== '' ? '/' : ''}${node.text}`);
+                        cache.set(`cms.page/${path}${path !== '' ? '/' : ''}${node.text}`, base64.decode(node.file));
+                    } else {
+                        toFile(`${basePath}/${path}${path !== '' ? '/' : ''}${node.text}`, node.file);
+                    }
                 } else if (node.type === 'directory' || node.type === CONTAINER_DIRECTORY) {
                     let path2 = `${path}${path !== '' ? '/' : ''}${node.text !== 'root' ? node.text : ''}`;
                     if (node.text !== 'root') {
@@ -95,29 +101,25 @@ export class Cms {
             }
 
             walk('', content, root);
-            File.fromPath(path.normalize(knownFolders.documents().path + '/data.json')).writeTextSync(JsonFn.stringify(Types));
-            File.fromPath(path.normalize(knownFolders.documents().path + '/root.json')).writeTextSync(JsonFn.stringify(root));
+            cache.set('cms.data', JsonFn.stringify(Types));
+            cache.set('cms.root', JsonFn.stringify(root));
             this.load();
         })
     }
 
     public load() {
-        let basePath;
-        if (File.exists(knownFolders.documents().path + '/page/index.json')) {
-            basePath = path.normalize(knownFolders.documents().path);
-        } else {
-            basePath = path.normalize(knownFolders.currentApp().path);
-        }
-        const root = JsonFn.parse(File.fromPath(`${basePath}/root.json`).readTextSync());
-        this.data.types = JsonFn.parse(File.fromPath(basePath + '/data.json').readTextSync());
+        const root = JsonFn.parse(cache.get('cms.root') || `{"path": "/", "type": "containerDirectory", "text": "Root", "children": []}`);
+        
+        this.data.types = JsonFn.parse(cache.get('cms.data') || `{}`);
 
         //noinspection TypeScriptUnresolvedVariable
         Types = global.Types = this.data.types;
 
         const entry = node => {
             if (node.type === CONTAINER_DIRECTORY) {
-                const index = File.fromPath(`${basePath}/page/${node.path}${node.path !== '' ? '/' : ''}index.json`).readTextSync();
-                const containerPage = JsonFn.parse(index);
+                console.log(`test: cms.page/${node.path}${node.path !== '' ? '/' : ''}index.json`);
+                const index = cache.get(`cms.page/${node.path}${node.path !== '' ? '/' : ''}index.json`);
+                const containerPage = JsonFn.parse(index || '{}');
                 const _path = node.path.charAt(0) === '/' ? _.capitalize(node.path) : '/' + _.capitalize(node.path);
                 this.data.containerPage[_path] = containerPage.containers;
                 // todo: page
@@ -212,8 +214,8 @@ export class Cms {
 @Injectable()
 export class ContainerService {
     public data:{
-        containers: Container[],
-        element: any
+        containers:Container[],
+        element:any
     } = {};
 }
 
