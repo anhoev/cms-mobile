@@ -43,7 +43,7 @@ export interface Type {
     serverFn:any,
     list:any[],
     template:string,
-    store:{[type:string]:{fn:any, serverFn:any, template:string}},
+    store:{[type:string]:{fn:any, serverFn:any, template:string, directives: any}},
     info:any
 }
 
