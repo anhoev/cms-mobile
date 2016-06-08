@@ -54,7 +54,7 @@ export enum StandardType {
 
 @Injectable()
 export class Cms {
-    public basePath = 'http://localhost:8888';
+    public basePath = cache.get('cms.basePath') || 'http://localhost:8888';
     public data:{
         types:{[type:string]:Type},
         containerPage:{[path:string]:Container[]}
@@ -70,6 +70,7 @@ export class Cms {
     }
 
     public sync() {
+        cache.set('cms.basePath', cms.basePath);
         http.request({url: this.basePath + "/cms-mobile", method: "GET"}).then(res => {
             const {tree:content, Types} = JsonFn.parse(res.content.toString());
             const basePath = path.normalize(knownFolders.documents().path + '/page');
@@ -111,13 +112,13 @@ export class Cms {
 
     public load() {
         const root = JsonFn.parse(cache.get('cms.root') || `{"path": "/", "type": "containerDirectory", "text": "Root", "children": []}`);
-        
+
         this.data.types = JsonFn.parse(cache.get('cms.data') || `{}`);
 
         //noinspection TypeScriptUnresolvedVariable
         Types = global.Types = this.data.types;
-        
-        if (this.initTypes) this.initTypes(); 
+
+        if (this.initTypes) this.initTypes();
 
         const entry = node => {
             if (node.type === CONTAINER_DIRECTORY) {
