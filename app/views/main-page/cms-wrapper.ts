@@ -20,7 +20,7 @@ const http = require("http");
 
 function toComponent(template:string, name:String, containers = [], directives = []) {
     const Type = Types['Wrapper'];
-    const wrapper = _.find(Type.store, (wrapper, k) => k === name);
+    const wrapper = Type.store[name];
     if (wrapper.directives) directives.push(...wrapper.directives);
     directives.push(NgStyle, CmsContainer, NS_ROUTER_DIRECTIVES, CmsFragment, CmsElement);
     @Component({
@@ -59,7 +59,7 @@ export class CmsWrapper {
     ngOnInit() {
         try {
             const Type = Types['Wrapper'];
-            const wrapper = _.find(Type.store, (wrapper, name) => name === this.name);
+            const wrapper = Type.store[this.name];
             if (wrapper) {
                 this.resolver.resolveComponent(toComponent(wrapper.template, this.name)).then((factory:ComponentFactory<any>) => {
                     this.viewContainer.createComponent(factory);
