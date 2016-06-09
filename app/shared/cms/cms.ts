@@ -43,7 +43,7 @@ export interface Type {
     serverFn:any,
     list:any[],
     template:string,
-    store:{[type:string]:{fn:any, serverFn:any, template:string, directives: any}},
+    store:{[type:string]:{fn:any, serverFn:any, template:string, directives:any}},
     info:any
 }
 
@@ -213,6 +213,13 @@ export class Cms {
             Types[type].list.push(e);
             if (cb) cb(Types[type], ref, _.find(Types[type].list, {_id: ref}));
         })
+    }
+
+    public loadElements(type, cb) {
+        http.request({url: `${this.basePath}/api/v1/${type}`, method: 'GET'}).then(res => {
+            this.data.types[type].list = JsonFn.clone(res.data);
+            if (cb) cb();
+        });
     }
 }
 
