@@ -155,7 +155,7 @@ export class Cms {
         for (let [type,Type] of Types) {
             if (Type.info.isViewElement) {
                 try {
-                    Type.list = JsonFn.parse(cache.get(`Types.${type}`)).list;
+                    Type.list = JsonFn.parse(cache.get(`Types.${type}.list`)).list;
                 } catch (e) {
                     // do nothing
                 }
@@ -218,12 +218,17 @@ export class Cms {
     public loadElements(type, cb) {
         http.request({url: `${this.basePath}/api/v1/${type}`, method: 'GET'}).then(res => {
             this.data.types[type].list = JsonFn.parse(res.content.toString());
+            cache.set(`Types.${type}.list`, this.data.types[type].list);
             if (cb) cb();
         });
     }
 
     public updateElement(type, model) {
-        http.request({url: `${this.basePath}/api/v1/${type}/${model._id}`, method: 'POST', content: JsonFn.stringify(model)})
+        http.request({
+            url: `${this.basePath}/api/v1/${type}/${model._id}`,
+            method: 'POST',
+            content: JsonFn.stringify(model)
+        })
             .then(function (res) {
                 console.log('update element successful')
             });
