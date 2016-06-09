@@ -217,7 +217,7 @@ export class Cms {
 
     public loadElements(type, cb) {
         http.request({url: `${this.basePath}/api/v1/${type}`, method: 'GET'}).then(res => {
-            this.data.types[type].list = JsonFn.clone(res.data);
+            this.data.types[type].list = JsonFn.parse(res.content.toString());
             if (cb) cb();
         });
     }
