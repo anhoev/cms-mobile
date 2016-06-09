@@ -223,7 +223,7 @@ export class Cms {
     }
 
     public updateElement(type, model) {
-        http.request({url: `api/v1/${type}/${model._id}`, method: 'POST', content: JsonFn.stringify(model)})
+        http.request({url: `${this.basePath}/api/v1/${type}/${model._id}`, method: 'POST', content: JsonFn.stringify(model)})
             .then(function (res) {
                 console.log('update element successful')
             });
