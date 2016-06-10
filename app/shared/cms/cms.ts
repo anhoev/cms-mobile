@@ -72,7 +72,7 @@ export class Cms {
     public sync() {
         cache.set('cms.basePath', cms.basePath);
         http.request({url: this.basePath + "/cms-mobile", method: "GET"}).then(res => {
-            const {tree:content, Types} = JsonFn.parse(res.content.toString());
+            const {tree:content, Types} = JsonFn.parse(res.content.toString(), true);
             const basePath = path.normalize(knownFolders.documents().path + '/page');
             const root = {};
 
@@ -111,9 +111,9 @@ export class Cms {
     }
 
     public load() {
-        const root = JsonFn.parse(cache.get('cms.root') || `{"path": "/", "type": "containerDirectory", "text": "Root", "children": []}`);
+        const root = JsonFn.parse(cache.get('cms.root') || `{"path": "/", "type": "containerDirectory", "text": "Root", "children": []}`, true);
 
-        this.data.types = JsonFn.parse(cache.get('cms.data') || `{}`);
+        this.data.types = JsonFn.parse(cache.get('cms.data') || `{}`, true);
 
         //noinspection TypeScriptUnresolvedVariable
         Types = global.Types = this.data.types;
@@ -124,7 +124,7 @@ export class Cms {
             if (node.type === CONTAINER_DIRECTORY) {
                 console.log(`test: cms.page/${node.path}${node.path !== '' ? '/' : ''}index.json`);
                 const index = cache.get(`cms.page/${node.path}${node.path !== '' ? '/' : ''}index.json`);
-                const containerPage = JsonFn.parse(index || '{}');
+                const containerPage = JsonFn.parse(index || '{}', true);
                 const _path = node.path.charAt(0) === '/' ? _.capitalize(node.path) : '/' + _.capitalize(node.path);
                 this.data.containerPage[_path] = containerPage.containers;
                 // todo: page
@@ -155,7 +155,7 @@ export class Cms {
         for (let [type,Type] of Types) {
             if (Type.info.isViewElement) {
                 try {
-                    Type.list = JsonFn.parse(cache.get(`Types.${type}.list`)).list;
+                    Type.list = JsonFn.parse(cache.get(`Types.${type}.list`), true).list;
                 } catch (e) {
                     // do nothing
                 }
@@ -208,7 +208,7 @@ export class Cms {
             method: "POST",
             content: JsonFn.stringify(content)
         }).then(res => {
-            const {data:e} = JsonFn.parse(res.content.toString());
+            const {data:e} = JsonFn.parse(res.content.toString(), true);
             const ref = e._id;
             Types[type].list.push(e);
             if (cb) cb(Types[type], ref, _.find(Types[type].list, {_id: ref}));
@@ -217,7 +217,7 @@ export class Cms {
 
     public loadElements(type, cb) {
         http.request({url: `${this.basePath}/api/v1/${type}`, method: 'GET'}).then(res => {
-            this.data.types[type].list = JsonFn.parse(res.content.toString());
+            this.data.types[type].list = JsonFn.parse(res.content.toString(), true);
             cache.set(`Types.${type}.list`, this.data.types[type].list);
             if (cb) cb();
         });
@@ -230,7 +230,7 @@ export class Cms {
             method: 'POST',
             content: JsonFn.stringify(model)
         }).then(function (res) {
-            console.log(res.content.toString());
+            console.log('update element successful');
         });
     }
 }
