@@ -226,12 +226,12 @@ export class Cms {
     public updateElement(type, model) {
         http.request({
             url: `${this.basePath}/api/v1/${type}/${model._id}`,
+            headers: {"Content-Type": "application/json"},
             method: 'POST',
             content: JsonFn.stringify(model)
-        })
-            .then(function (res) {
-                console.log('update element successful')
-            });
+        }).then(function (res) {
+            console.log(res.content.toString());
+        });
     }
 }
 
