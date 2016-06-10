@@ -218,8 +218,8 @@ export class Cms {
     public loadElements(type, cb) {
         http.request({url: `${this.basePath}/api/v1/${type}`, method: 'GET'}).then(res => {
             this.data.types[type].list = JsonFn.parse(res.content.toString(), true);
-            cache.set(`Types.${type}.list`, this.data.types[type].list);
             if (cb) cb();
+            cache.set(`Types.${type}.list`, JsonFn.stringify(this.data.types[type].list));
         });
     }
 
