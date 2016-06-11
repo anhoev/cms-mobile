@@ -155,7 +155,7 @@ export class Cms {
         for (let [type,Type] of Types) {
             if (Type.info.isViewElement) {
                 try {
-                    Type.list = JsonFn.parse(cache.get(`Types.${type}.list`), true).list;
+                    Type.list = JsonFn.parse(cache.get(`Types.${type}.list`), true);
                 } catch (e) {
                     // do nothing
                 }
@@ -220,8 +220,6 @@ export class Cms {
             this.data.types[type].list = JsonFn.parse(res.content.toString(), true);
             if (cb) cb();
             cache.set(`Types.${type}.list`, JsonFn.stringify(this.data.types[type].list));
-        }, (e) => {
-            this.data.types[type].list = cache.get(`Types.${type}.list`);
         });
     }
 
