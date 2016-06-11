@@ -153,7 +153,7 @@ export class Cms {
         // get data from cache (if element is not viewelement)
 
         for (let [type,Type] of Types) {
-            if (Type.info.isViewElement) {
+            if (!Type.info.isViewElement) {
                 try {
                     Type.list = JsonFn.parse(cache.get(`Types.${type}.list`), true);
                 } catch (e) {
