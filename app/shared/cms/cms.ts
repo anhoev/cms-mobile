@@ -212,7 +212,7 @@ export class Cms {
             const ref = e._id;
             Types[type].list.push(e);
             if (cb) cb(_.find(Types[type].list, {_id: ref}));
-        })
+        }, e => console.log(e));
     }
 
     public loadElements(type, cb) {
