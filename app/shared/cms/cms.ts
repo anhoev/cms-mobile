@@ -153,11 +153,13 @@ export class Cms {
         // get data from cache (if element is not viewelement)
 
         for (let [type,Type] of Types) {
+            //noinspection TypeScriptUnresolvedVariable
             if (!Type.info.isViewElement) {
+                console.log('Get list for ' + type);
                 try {
                     Type.list = JsonFn.parse(cache.get(`Types.${type}.list`), true);
                 } catch (e) {
-                    // do nothing
+                    console.warn(e);
                 }
             }
         }
@@ -210,7 +212,7 @@ export class Cms {
         }).then(res => {
             const {data:e} = JsonFn.parse(res.content.toString(), true);
             const ref = e._id;
-            Types[type].list = Types[type].list || []; 
+            Types[type].list = Types[type].list || [];
             Types[type].list.push(e);
             if (cb) cb(_.find(Types[type].list, {_id: ref}));
         }, e => console.log(e));
