@@ -201,7 +201,7 @@ export class Cms {
         return _.find(Types[type].list, {ID});
     }
 
-    public createModel(type, cb, content) {
+    public createElement(type, content, cb) {
         http.request({
             url: `${this.basePath}/cms-types/${type}`,
             headers: {"Content-Type": "application/json"},
@@ -211,7 +211,7 @@ export class Cms {
             const {data:e} = JsonFn.parse(res.content.toString(), true);
             const ref = e._id;
             Types[type].list.push(e);
-            if (cb) cb(Types[type], ref, _.find(Types[type].list, {_id: ref}));
+            if (cb) cb(_.find(Types[type].list, {_id: ref}));
         })
     }
 
