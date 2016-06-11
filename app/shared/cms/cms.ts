@@ -220,6 +220,8 @@ export class Cms {
             this.data.types[type].list = JsonFn.parse(res.content.toString(), true);
             if (cb) cb();
             cache.set(`Types.${type}.list`, JsonFn.stringify(this.data.types[type].list));
+        }, (e) => {
+            this.data.types[type].list = cache.get(`Types.${type}.list`);
         });
     }
 
