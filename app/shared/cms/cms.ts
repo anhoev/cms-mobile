@@ -210,6 +210,7 @@ export class Cms {
         }).then(res => {
             const {data:e} = JsonFn.parse(res.content.toString(), true);
             const ref = e._id;
+            Types[type].list = Types[type].list || []; 
             Types[type].list.push(e);
             if (cb) cb(_.find(Types[type].list, {_id: ref}));
         }, e => console.log(e));
