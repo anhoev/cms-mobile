@@ -73,8 +73,6 @@ export class Cms {
     public sync() {
         cache.set('cms.basePath', cms.basePath);
         http.request({url: this.basePath + "/cms-mobile", method: "GET"}).then(res => {
-            this.alreadyLoaded = true;
-            cache.set('cms.alreadyLoaded', 'true');
             const {tree:content, Types} = JsonFn.parse(res.content.toString(), true);
             const basePath = path.normalize(knownFolders.documents().path + '/page');
             const root = {};
@@ -110,6 +108,9 @@ export class Cms {
             cache.set('cms.data', JsonFn.stringify(Types));
             cache.set('cms.root', JsonFn.stringify(root));
             this.load();
+            
+            this.alreadyLoaded = true;
+            cache.set('cms.alreadyLoaded', 'true');
         })
     }
 
