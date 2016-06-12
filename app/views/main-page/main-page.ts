@@ -13,7 +13,7 @@ export function createPage() {
         selector: "main-page",
         template: `
         <GridLayout rows="auto, *">
-            <StackLayout row="0" cmsSync></StackLayout>
+            <StackLayout row="0" cmsSync *ngIf="!cms.alreadyLoaded"></StackLayout>
             <GridLayout row="1">
                 <template row="1" ngFor let-container [ngForOf]="containerService.data.containers">
                     <template [cmsContainer]="container.name" ></template>
