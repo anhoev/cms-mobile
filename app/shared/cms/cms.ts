@@ -152,12 +152,12 @@ export class Cms {
 
         // get data from cache (if element is not viewelement)
 
-        for (let [type,Type] of Types) {
+        for (let type in Types) {
             //noinspection TypeScriptUnresolvedVariable
-            if (!Type.info.isViewElement) {
+            if (!Types[type].info.isViewElement) {
                 console.log('Get list for ' + type);
                 try {
-                    Type.list = JsonFn.parse(cache.get(`Types.${type}.list`), true);
+                    Types[type].list = JsonFn.parse(cache.get(`Types.${type}.list`), true);
                 } catch (e) {
                     console.warn(e);
                 }
