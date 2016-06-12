@@ -6,7 +6,7 @@ import {Component, forwardRef, Inject} from "@angular/core";
 
 
 @Component({
-    selector: "cmsSync",
+    selector: "[cmsSync]",
     template: `
         <GridLayout row="0" columns="3*,2*" rows="auto">
             <TextField [(ngModel)]="cms.basePath" col="0"></TextField>
