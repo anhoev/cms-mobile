@@ -4,6 +4,7 @@ import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
 import {TextField} from "ui/text-field";
 import {CmsContainer} from "./cms-container";
 import {Cms, ContainerService} from "../../shared/cms/cms";
+import {cmsSync} from "./cms-sync";
 
 const {File, knownFolders, path} = require('file-system');
 
@@ -20,7 +21,7 @@ export function createPage() {
             </GridLayout>
         </GridLayout >
         `,
-        directives: [CmsContainer, NS_ROUTER_DIRECTIVES],
+        directives: [CmsContainer, NS_ROUTER_DIRECTIVES, cmsSync],
         providers: [forwardRef(() => ContainerService)]
     })
     class MainPage {

@@ -15,7 +15,7 @@ import {Component, forwardRef, Inject} from "@angular/core";
         `,
     directives: []
 })
-class cmsSync {
+export class cmsSync {
     constructor(@Inject(forwardRef(() => Cms)) private cms:Cms) {
     }
 }
