@@ -12,10 +12,7 @@ export function createPage() {
         selector: "main-page",
         template: `
         <GridLayout rows="auto, *">
-            <GridLayout row="0" columns="3*,2*" rows="auto">
-                <TextField [(ngModel)]="cms.basePath" col="0"></TextField>
-                <Button text="Sync" (tap)="cms.sync()" col="1" style="color:red"></Button>
-            </GridLayout>
+            <StackLayout [cmsSync]  *ngIf="!cms.alreadyLoaded"></StackLayout>
             <GridLayout row="1">
                 <template row="1" ngFor let-container [ngForOf]="containerService.data.containers">
                     <template [cmsContainer]="container.name" ></template>

@@ -63,6 +63,7 @@ export class Cms {
     public routes:{path:string, component:any, as:string}[] = [];
     public cache = cache;
     public initTypes;
+    public alreadyLoaded = cache.get('cms.alreadyLoaded') === 'true';
 
     constructor(private dynamicRouteConfigurator:DynamicRouteConfigurator/*, private router:Router*/) {
         //noinspection TypeScriptUnresolvedVariable
@@ -72,6 +73,8 @@ export class Cms {
     public sync() {
         cache.set('cms.basePath', cms.basePath);
         http.request({url: this.basePath + "/cms-mobile", method: "GET"}).then(res => {
+            this.alreadyLoaded = true;
+            cache.set('cms.alreadyLoaded', 'true');
             const {tree:content, Types} = JsonFn.parse(res.content.toString(), true);
             const basePath = path.normalize(knownFolders.documents().path + '/page');
             const root = {};
