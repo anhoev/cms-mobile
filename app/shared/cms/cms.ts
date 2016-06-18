@@ -108,7 +108,7 @@ export class Cms {
             cache.set('cms.data', JsonFn.stringify(Types));
             cache.set('cms.root', JsonFn.stringify(root));
             this.load();
-            
+
             this.alreadyLoaded = true;
             cache.set('cms.alreadyLoaded', 'true');
         })
@@ -140,7 +140,7 @@ export class Cms {
                 const route = {
                     path: _path,
                     component: createPage(),
-                    as: _.capitalize(node.text),
+                    name: _.capitalize(node.text),
                     data: {path: _path}
                 };
                 this.routes.push(route);
