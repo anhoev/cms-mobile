@@ -38,6 +38,7 @@ export interface Element {
 }
 
 export interface Type {
+    queryList:any[];
     directives:any[];
     fn:any,
     serverFn:any,
@@ -222,10 +223,17 @@ export class Cms {
         }, e => console.log(e));
     }
 
-    public loadElements(type, cb) {
-        http.request({url: `${this.basePath}/api/v1/${type}`, method: 'GET'}).then(res => {
-            this.data.types[type].list = JsonFn.parse(res.content.toString(), true);
-            if (cb) cb();
+    public loadElements(type, cb, params) {
+        http.request({url: `${this.basePath}/api/v1/${type}?${params}`, method: 'GET'}).then(res => {
+            const list = JsonFn.parse(res.content.toString(), true);
+            if (params) {
+                this.data.types[type].list = _.unionWith(this.data.types[type].list, list, (e1, e2) => e1._id === e2._id);
+                this.data.types[type].queryList = list.map(e => _.find(this.data.types[type].list, e2 => e2._id === e._id));
+                if (cb) cb(this.data.types[type].queryList);
+            } else {
+                this.data.types[type].list = list;
+                if (cb) cb(this.data.types[type].list);
+            }
             cache.set(`Types.${type}.list`, JsonFn.stringify(this.data.types[type].list));
         });
     }
