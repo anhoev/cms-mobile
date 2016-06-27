@@ -33,7 +33,7 @@
 		"email-validator": "^1.0.4",
 		"json-fn": "^0.60.0",
 		"lodash": "^4.3.0",
-		"nativescript-angular": "0.1.6",
+		"nativescript-angular": "0.1.7",
 		"nativescript-cache": "^1.0.0",
 		"nativescript-iqkeyboardmanager": "^1.0.1",
 		"nativescript-social-share": "^1.1.3",
