@@ -2,6 +2,7 @@ import {JsonFn, _} from "../../global.lib";
 import {Injectable} from "@angular/core";
 import {DynamicRouteConfigurator} from "../route/dynamic-route";
 import {createPage} from "../../views/main-page/main-page";
+import {Router} from "@angular/router";
 export let Types:{[type:string]:Type};
 export let cms:Cms;
 const {File, Folder, knownFolders, path} = require('file-system');
@@ -66,7 +67,7 @@ export class Cms {
     public initTypes;
     public alreadyLoaded = cache.get('cms.alreadyLoaded') === 'true';
 
-    constructor(private dynamicRouteConfigurator:DynamicRouteConfigurator/*, private router:Router*/) {
+    constructor(private router:Router) {
         //noinspection TypeScriptUnresolvedVariable
         cms = global.cms = this;
     }
@@ -116,7 +117,7 @@ export class Cms {
     }
 
     public load() {
-        const root = JsonFn.parse(cache.get('cms.root') || `{"path": "/", "type": "containerDirectory", "text": "Root", "children": []}`, true);
+        const root = JsonFn.parse(cache.get('cms.root') || `{"path": "", "type": "containerDirectory", "text": "Root", "children": []}`, true);
 
         this.data.types = JsonFn.parse(cache.get('cms.data') || `{}`, true);
 
@@ -127,10 +128,9 @@ export class Cms {
 
         const entry = node => {
             if (node.type === CONTAINER_DIRECTORY) {
-                console.log(`test: cms.page/${node.path}${node.path !== '' ? '/' : ''}index.json`);
                 const index = cache.get(`cms.page/${node.path}${node.path !== '' ? '/' : ''}index.json`);
                 const containerPage = JsonFn.parse(index || '{}', true);
-                const _path = node.path.charAt(0) === '/' ? _.capitalize(node.path) : '/' + _.capitalize(node.path);
+                const _path = _.capitalize(node.path);
                 this.data.containerPage[_path] = containerPage.containers;
                 // todo: page
                 if (this.services[_path]) {
@@ -140,9 +140,9 @@ export class Cms {
                 // create Page
                 const route = {
                     path: _path,
-                    component: createPage(),
-                    name: _.capitalize(node.text),
-                    data: {path: _path}
+                    component: createPage(_path),
+                    //name: _.capitalize(node.text),
+                    //data: {path: _path}
                 };
                 this.routes.push(route);
             }
@@ -153,7 +153,8 @@ export class Cms {
         entry(root);
 
         console.log(JSON.stringify(this.routes));
-        this.dynamicRouteConfigurator.addRoutes(this.routes);
+        //noinspection TypeScriptUnresolvedVariable
+        this.router.config.push(...this.routes);
 
         // get data from cache (if element is not viewelement)
 

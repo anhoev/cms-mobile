@@ -12,22 +12,20 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = require("@angular/core");
-var router_deprecated_1 = require("@angular/router-deprecated");
 var router_1 = require("nativescript-angular/router");
 var cms_container_1 = require("./cms-container");
 var cms_1 = require("../../shared/cms/cms");
 var cms_sync_1 = require("./cms-sync");
-var _a = require('file-system'), File = _a.File, knownFolders = _a.knownFolders, path = _a.path;
-function createPage() {
+function createPage(path) {
     var MainPage = (function () {
-        function MainPage(routeData, cms, containerService) {
-            this.routeData = routeData;
+        function MainPage(cms, containerService) {
             this.cms = cms;
             this.containerService = containerService;
+            this.path = path;
             console.log('create page');
-            var path = routeData.get('path');
-            containerService.data.containers = this.cms.data.containerPage[path];
-            this.cms.services[path] = this.containerService;
+            containerService.data.containers = this.cms.data.containerPage[this.path];
+            console.log(JSON.stringify(containerService.data.containers));
+            this.cms.services[this.path] = this.containerService;
         }
         MainPage = __decorate([
             core_1.Component({
@@ -36,13 +34,13 @@ function createPage() {
                 directives: [cms_container_1.CmsContainer, router_1.NS_ROUTER_DIRECTIVES, cms_sync_1.cmsSync],
                 providers: [core_1.forwardRef(function () { return cms_1.ContainerService; })]
             }),
-            __param(1, core_1.Inject(core_1.forwardRef(function () { return cms_1.Cms; }))),
-            __param(2, core_1.Inject(core_1.forwardRef(function () { return cms_1.ContainerService; }))), 
-            __metadata('design:paramtypes', [router_deprecated_1.RouteData, cms_1.Cms, cms_1.ContainerService])
+            __param(0, core_1.Inject(core_1.forwardRef(function () { return cms_1.Cms; }))),
+            __param(1, core_1.Inject(core_1.forwardRef(function () { return cms_1.ContainerService; }))), 
+            __metadata('design:paramtypes', [cms_1.Cms, cms_1.ContainerService])
         ], MainPage);
         return MainPage;
     }());
     return MainPage;
 }
 exports.createPage = createPage;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWFpbi1wYWdlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsibWFpbi1wYWdlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7QUFBQSxxQkFBNEMsZUFBZSxDQUFDLENBQUE7QUFDNUQsa0NBQXdCLDRCQUE0QixDQUFDLENBQUE7QUFDckQsdUJBQW1DLDZCQUE2QixDQUFDLENBQUE7QUFFakUsOEJBQTJCLGlCQUFpQixDQUFDLENBQUE7QUFDN0Msb0JBQW9DLHNCQUFzQixDQUFDLENBQUE7QUFDM0QseUJBQXNCLFlBQVksQ0FBQyxDQUFBO0FBRW5DLElBQUEsMkJBQXlELEVBQWxELGNBQUksRUFBRSw4QkFBWSxFQUFFLGNBQUksQ0FBMkI7QUFFMUQ7SUFnQkk7UUFDSSxrQkFBb0IsU0FBbUIsRUFDWSxHQUFPLEVBQ00sZ0JBQWlDO1lBRjdFLGNBQVMsR0FBVCxTQUFTLENBQVU7WUFDWSxRQUFHLEdBQUgsR0FBRyxDQUFJO1lBQ00scUJBQWdCLEdBQWhCLGdCQUFnQixDQUFpQjtZQUM3RixPQUFPLENBQUMsR0FBRyxDQUFDLGFBQWEsQ0FBQyxDQUFDO1lBQzNCLElBQU0sSUFBSSxHQUFHLFNBQVMsQ0FBQyxHQUFHLENBQUMsTUFBTSxDQUFDLENBQUM7WUFDbkMsZ0JBQWdCLENBQUMsSUFBSSxDQUFDLFVBQVUsR0FBRyxJQUFJLENBQUMsR0FBRyxDQUFDLElBQUksQ0FBQyxhQUFhLENBQUMsSUFBSSxDQUFDLENBQUM7WUFDckUsSUFBSSxDQUFDLEdBQUcsQ0FBQyxRQUFRLENBQUMsSUFBSSxDQUFDLEdBQUcsSUFBSSxDQUFDLGdCQUFnQixDQUFDO1FBQ3BELENBQUM7UUF2Qkw7WUFBQyxnQkFBUyxDQUFDO2dCQUNQLFFBQVEsRUFBRSxXQUFXO2dCQUNyQixRQUFRLEVBQUUsc2JBU1Q7Z0JBQ0QsVUFBVSxFQUFFLENBQUMsNEJBQVksRUFBRSw2QkFBb0IsRUFBRSxrQkFBTyxDQUFDO2dCQUN6RCxTQUFTLEVBQUUsQ0FBQyxpQkFBVSxDQUFDLGNBQU0sT0FBQSxzQkFBZ0IsRUFBaEIsQ0FBZ0IsQ0FBQyxDQUFDO2FBQ2xELENBQUM7dUJBR2UsYUFBTSxDQUFDLGlCQUFVLENBQUMsY0FBTSxPQUFBLFNBQUcsRUFBSCxDQUFHLENBQUMsQ0FBQzt1QkFDN0IsYUFBTSxDQUFDLGlCQUFVLENBQUMsY0FBTSxPQUFBLHNCQUFnQixFQUFoQixDQUFnQixDQUFDLENBQUM7O29CQUp6RDtRQVVGLGVBQUM7SUFBRCxDQUFDLEFBVEQsSUFTQztJQUVELE1BQU0sQ0FBQyxRQUFRLENBQUM7QUFDcEIsQ0FBQztBQTVCZSxrQkFBVSxhQTRCekIsQ0FBQSJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWFpbi1wYWdlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsibWFpbi1wYWdlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7QUFBQSxxQkFBNEMsZUFBZSxDQUFDLENBQUE7QUFDNUQsdUJBQW1DLDZCQUE2QixDQUFDLENBQUE7QUFDakUsOEJBQTJCLGlCQUFpQixDQUFDLENBQUE7QUFDN0Msb0JBQW9DLHNCQUFzQixDQUFDLENBQUE7QUFDM0QseUJBQXNCLFlBQVksQ0FBQyxDQUFBO0FBRW5DLG9CQUEyQixJQUFJO0lBZ0IzQjtRQUdJLGtCQUFtRCxHQUFPLEVBQ00sZ0JBQWlDO1lBRDlDLFFBQUcsR0FBSCxHQUFHLENBQUk7WUFDTSxxQkFBZ0IsR0FBaEIsZ0JBQWdCLENBQWlCO1lBSGpHLFNBQUksR0FBRyxJQUFJLENBQUM7WUFJUixPQUFPLENBQUMsR0FBRyxDQUFDLGFBQWEsQ0FBQyxDQUFDO1lBQzNCLGdCQUFnQixDQUFDLElBQUksQ0FBQyxVQUFVLEdBQUcsSUFBSSxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsYUFBYSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztZQUMxRSxPQUFPLENBQUMsR0FBRyxDQUFDLElBQUksQ0FBQyxTQUFTLENBQUMsZ0JBQWdCLENBQUMsSUFBSSxDQUFDLFVBQVUsQ0FBQyxDQUFDLENBQUM7WUFDOUQsSUFBSSxDQUFDLEdBQUcsQ0FBQyxRQUFRLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxHQUFHLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQztRQUN6RCxDQUFDO1FBeEJMO1lBQUMsZ0JBQVMsQ0FBQztnQkFDUCxRQUFRLEVBQUUsV0FBVztnQkFDckIsUUFBUSxFQUFFLHNiQVNUO2dCQUNELFVBQVUsRUFBRSxDQUFDLDRCQUFZLEVBQUUsNkJBQW9CLEVBQUUsa0JBQU8sQ0FBQztnQkFDekQsU0FBUyxFQUFFLENBQUMsaUJBQVUsQ0FBQyxjQUFNLE9BQUEsc0JBQWdCLEVBQWhCLENBQWdCLENBQUMsQ0FBQzthQUNsRCxDQUFDO3VCQUllLGFBQU0sQ0FBQyxpQkFBVSxDQUFDLGNBQU0sT0FBQSxTQUFHLEVBQUgsQ0FBRyxDQUFDLENBQUM7dUJBQzdCLGFBQU0sQ0FBQyxpQkFBVSxDQUFDLGNBQU0sT0FBQSxzQkFBZ0IsRUFBaEIsQ0FBZ0IsQ0FBQyxDQUFDOztvQkFMekQ7UUFXRixlQUFDO0lBQUQsQ0FBQyxBQVZELElBVUM7SUFFRCxNQUFNLENBQUMsUUFBUSxDQUFDO0FBQ3BCLENBQUM7QUE3QmUsa0JBQVUsYUE2QnpCLENBQUEifQ==

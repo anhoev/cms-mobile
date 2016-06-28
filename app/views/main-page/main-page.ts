@@ -1,14 +1,10 @@
 import {Component, forwardRef, Inject} from "@angular/core";
-import {RouteData} from "@angular/router-deprecated";
 import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
-import {TextField} from "ui/text-field";
 import {CmsContainer} from "./cms-container";
 import {Cms, ContainerService} from "../../shared/cms/cms";
 import {cmsSync} from "./cms-sync";
 
-const {File, knownFolders, path} = require('file-system');
-
-export function createPage() {
+export function createPage(path) {
     @Component({
         selector: "main-page",
         template: `
@@ -25,13 +21,14 @@ export function createPage() {
         providers: [forwardRef(() => ContainerService)]
     })
     class MainPage {
-        constructor(private routeData:RouteData,
-                    @Inject(forwardRef(() => Cms)) private cms:Cms,
+        path = path;
+
+        constructor(@Inject(forwardRef(() => Cms)) private cms:Cms,
                     @Inject(forwardRef(() => ContainerService)) private containerService:ContainerService) {
             console.log('create page');
-            const path = routeData.get('path');
-            containerService.data.containers = this.cms.data.containerPage[path];
-            this.cms.services[path] = this.containerService;
+            containerService.data.containers = this.cms.data.containerPage[this.path];
+            console.log(JSON.stringify(containerService.data.containers));
+            this.cms.services[this.path] = this.containerService;
         }
     }
 
