@@ -7,8 +7,8 @@ function __export(m) {
  * @description
  * Starting point to import all public core APIs.
  */
+__export(require('./app/app.route'));
 __export(require('./app/shared/cms/cms'));
-__export(require('./app/shared/route/dynamic-route'));
 __export(require('./app/views/main-page/cms-container'));
 __export(require('./app/views/main-page/cms-element'));
 __export(require('./app/views/main-page/cms-wrapper'));
