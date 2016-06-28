@@ -27,7 +27,7 @@ function toComponent(template:string, element:any,
                      directives = []) {
     const {containers, type, binding, ref}  = element;
     const model = _.find(Types[element.type].list, {_id: ref});
-    directives.push(NgStyle, CmsContainer, CmsWrapper, NS_ROUTER_DIRECTIVES, CmsFragment, CmsElement);
+    directives.push(NgStyle, CmsContainer, CmsWrapper, CmsFragment, CmsElement);
     if (Types[element.type].directives) directives.push(...Types[element.type].directives);
     @Component({
         selector: '[dynamic-component]',
