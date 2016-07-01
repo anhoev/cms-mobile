@@ -12,7 +12,6 @@ import {NgStyle} from "@angular/common";
 import {Cms, ContainerService, Types, injectFnAndServerFnByWrapper} from "../../shared/cms/cms";
 import {CmsContainer} from "./cms-container";
 import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
-import {Router} from "@angular/router-deprecated";
 import {CmsFragment} from "./cms-fragment";
 import {_} from "../../global.lib";
 import {CmsElement} from "./cms-element";
@@ -33,9 +32,8 @@ function toComponent(template:string, name:String, containers = [], directives =
         private model:any = {};
         private element = {element: {model: {_id: null}}}
 
-        constructor(private containerService:ContainerService, private router:Router) {
+        constructor(private containerService:ContainerService) {
             this.containerService.data = {containers};
-            this.model.router = router;
             if (name) injectFnAndServerFnByWrapper(this, name)
         }
     }
