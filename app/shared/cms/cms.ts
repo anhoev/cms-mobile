@@ -1,8 +1,8 @@
 import {JsonFn, _} from "../../global.lib";
 import {Injectable} from "@angular/core";
 import {DynamicRouteConfigurator} from "../route/dynamic-route";
-import {MainPage} from "../../views/main-page/main-page";
-import {Router} from "@angular/router";
+import {createPage} from "../../views/main-page/main-page";
+import {Router, RouterConfig} from "@angular/router";
 export let Types:{[type:string]:Type};
 export let cms:Cms;
 const {File, Folder, knownFolders, path} = require('file-system');
@@ -137,14 +137,10 @@ export class Cms {
                     this.services[_path].data.containers = this.data.containerPage[_path];
                 }
 
-                class _MainPage extends MainPage {
-                    path = _path;
-                }
-
                 // create Page
                 const route = {
                     path: _path,
-                    component: _MainPage,
+                    component: createPage(_path),
                     //name: _.capitalize(node.text),
                     //data: {path: _path}
                 };
