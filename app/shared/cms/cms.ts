@@ -1,7 +1,7 @@
 import {JsonFn, _} from "../../global.lib";
 import {Injectable} from "@angular/core";
 import {DynamicRouteConfigurator} from "../route/dynamic-route";
-import {createPage} from "../../views/main-page/main-page";
+import {createPage, MainPage} from "../../views/main-page/main-page";
 import {Router, RouterConfig} from "@angular/router";
 export let Types:{[type:string]:Type};
 export let cms:Cms;
@@ -140,9 +140,9 @@ export class Cms {
                 // create Page
                 const route = {
                     path: _path,
-                    component: createPage(_path),
+                    component: MainPage,
+                    // data: {path: _path}
                     //name: _.capitalize(node.text),
-                    //data: {path: _path}
                 };
                 this.routes.push(route);
             }

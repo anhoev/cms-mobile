@@ -3,11 +3,11 @@ import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
 import {CmsContainer} from "./cms-container";
 import {Cms, ContainerService} from "../../shared/cms/cms";
 import {cmsSync} from "./cms-sync";
+import {ActivatedRoute} from "@angular/router";
 
-export function createPage(path) {
-    return @Component({
-        selector: "main-page",
-        template: `
+@Component({
+    selector: "main-page",
+    template: `
         <GridLayout rows="auto, *">
             <StackLayout row="0" cmsSync *ngIf="!cms.alreadyLoaded"></StackLayout>
             <GridLayout row="1">
@@ -17,18 +17,19 @@ export function createPage(path) {
             </GridLayout>
         </GridLayout >
         `,
-        directives: [CmsContainer, NS_ROUTER_DIRECTIVES, cmsSync],
-        providers: [forwardRef(() => ContainerService)]
-    })
-    class MainPage {
-        path = path;
+    directives: [CmsContainer, NS_ROUTER_DIRECTIVES, cmsSync],
+    providers: [forwardRef(() => ContainerService)]
+})
+export class MainPage {
+    path;
 
-        constructor(@Inject(forwardRef(() => Cms)) private cms:Cms,
-                    @Inject(forwardRef(() => ContainerService)) private containerService:ContainerService) {
-            console.log('create page');
-            containerService.data.containers = this.cms.data.containerPage[this.path];
-            console.log(JSON.stringify(containerService.data.containers));
-            this.cms.services[this.path] = this.containerService;
-        }
+    constructor(@Inject(forwardRef(() => Cms)) private cms:Cms,
+                @Inject(forwardRef(() => ContainerService)) private containerService:ContainerService,
+                private router:ActivatedRoute) {
+        console.log(`create page${JSON.stringify(router.snapshot.url)}`);
+        this.path = '';
+        containerService.data.containers = this.cms.data.containerPage[this.path];
+        console.log(JSON.stringify(containerService.data.containers));
+        this.cms.services[this.path] = this.containerService;
     }
 }
