@@ -56,7 +56,9 @@ export declare class Cms {
             [type: string]: Type;
         };
         containerPage: {
-            [path: string]: Container[];
+            [path: string]: {
+                [type: string]: Container;
+            };
         };
     };
     services: {
@@ -84,7 +86,9 @@ export declare class Cms {
 }
 export declare class ContainerService {
     data: {
-        containers: Container[];
+        containers: {
+            [type: string]: Container;
+        };
         element: any;
     };
 }

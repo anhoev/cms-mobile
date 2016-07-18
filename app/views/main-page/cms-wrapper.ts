@@ -15,6 +15,7 @@ import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
 import {CmsFragment} from "./cms-fragment";
 import {_} from "../../global.lib";
 import {CmsElement} from "./cms-element";
+import {KeysPipe} from "./KeysPipe";
 const http = require("http");
 
 function toComponent(template:string, name:String, containers = [], directives = []) {
@@ -26,7 +27,8 @@ function toComponent(template:string, name:String, containers = [], directives =
         selector: '[dynamic-component]',
         template,
         directives,
-        providers: [ContainerService]
+        providers: [ContainerService],
+        pipes: [KeysPipe]
     })
     class DynamicComponent {
         private model:any = {};

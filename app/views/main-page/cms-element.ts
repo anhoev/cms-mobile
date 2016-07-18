@@ -20,6 +20,7 @@ import {NS_ROUTER_DIRECTIVES} from "nativescript-angular/router";
 import {CmsFragment} from "./cms-fragment";
 import {isPresent} from "@angular/core/src/facade/lang";
 import {DefaultKeyValueDiffer} from "@angular/core/src/change_detection/differs/default_keyvalue_differ";
+import {KeysPipe} from "./KeysPipe";
 const http = require("http");
 const _ = require('lodash');
 
@@ -33,7 +34,8 @@ function toComponent(template:string, element:any,
         selector: '[dynamic-component]',
         template,
         directives,
-        providers: [ContainerService]
+        providers: [ContainerService],
+        pipes: [KeysPipe]
     })
     class DynamicComponent implements DoCheck {
 
@@ -133,8 +135,8 @@ export class CmsElement implements DoCheck {
 
     render() {
         try {
+            console.log('element :' + this.element.type);
             if (this.element.type && _.find(Types[this.element.type].list, {_id: this.element.ref})) {
-                console.log('element :' + this.element.type);
                 let template:string = Types[this.element.type].template;
                 let isList = false;
                 const {binding} = this.element;

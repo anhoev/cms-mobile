@@ -4,6 +4,7 @@ import {CmsContainer} from "./cms-container";
 import {Cms, ContainerService} from "../../shared/cms/cms";
 import {cmsSync} from "./cms-sync";
 import {ActivatedRoute} from "@angular/router";
+import {KeysPipe} from "./KeysPipe";
 
 @Component({
     selector: "main-page",
@@ -11,14 +12,15 @@ import {ActivatedRoute} from "@angular/router";
         <GridLayout rows="auto, *">
             <StackLayout row="0" cmsSync *ngIf="!cms.alreadyLoaded"></StackLayout>
             <GridLayout row="1">
-                <template row="1" ngFor let-container [ngForOf]="containerService.data.containers">
-                    <template [cmsContainer]="container.name" ></template>
+                <template row="1" ngFor let-container [ngForOf]="containerService.data.containers | keys">
+                    <template [cmsContainer]="container" ></template>
                 </template>
             </GridLayout>
         </GridLayout >
         `,
     directives: [CmsContainer, NS_ROUTER_DIRECTIVES, cmsSync],
-    providers: [forwardRef(() => ContainerService)]
+    providers: [forwardRef(() => ContainerService)],
+    pipes: [KeysPipe]
 })
 export class MainPage {
     path;
