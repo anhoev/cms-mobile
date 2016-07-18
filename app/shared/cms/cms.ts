@@ -59,7 +59,7 @@ export class Cms {
     public basePath = cache.get('cms.basePath') || 'http://localhost:8888';
     public data:{
         types:{[type:string]:Type},
-        containerPage:{[path:string]:Container[]}
+        containerPage:{[path:string]:{[type:String]:Container}}
     } = {containerPage: {}, types: {}};
     public services:{[type:string]:ContainerService} = {};
     public routes:{path:string, component:any, as:string}[] = [];
@@ -254,7 +254,7 @@ export class Cms {
 @Injectable()
 export class ContainerService {
     public data:{
-        containers:Container[],
+        containers:{[type:String]:Container},
         element:any
     } = {};
 }
