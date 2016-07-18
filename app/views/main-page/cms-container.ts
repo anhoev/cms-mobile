@@ -25,7 +25,8 @@ export class CmsContainer {
 
     ngOnInit() {
         if (this.containerService) {
-            const container = _.find(this.containerService.data.containers, c => c.name === this.name);
+            console.log(`container : ${this.name}`);
+            const container = this.containerService.data.containers[this.name];
             if (container) {
                 for (const element of container.elements) {
                     this.resolver.resolveComponent(CmsElement).then((factory:ComponentFactory<any>) => {

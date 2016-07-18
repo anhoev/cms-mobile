@@ -26,7 +26,7 @@ export class MainPage {
     constructor(@Inject(forwardRef(() => Cms)) private cms:Cms,
                 @Inject(forwardRef(() => ContainerService)) private containerService:ContainerService,
                 private router:ActivatedRoute) {
-        console.log(`create page${JSON.stringify(router.snapshot.url)}`);
+        console.log(`create page ${JSON.stringify(router.snapshot.url)}`);
         this.path = '';
         containerService.data.containers = this.cms.data.containerPage[this.path];
         console.log(JSON.stringify(containerService.data.containers));
