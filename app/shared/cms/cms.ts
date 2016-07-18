@@ -141,7 +141,7 @@ export class Cms {
                 const route = {
                     path: _path,
                     component: MainPage,
-                    // data: {path: _path}
+                    data: {path: _path}
                     //name: _.capitalize(node.text),
                 };
                 this.routes.push(route);
