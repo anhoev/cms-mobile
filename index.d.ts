@@ -7,3 +7,4 @@ export * from './app/views/main-page/main-page';
 export * from './app/views/main-page/cms-sync';
 export * from './app/views/main-page/cms-fragment';
 export * from './app/utils/status-bar-util';
+export * from './app/global.lib';

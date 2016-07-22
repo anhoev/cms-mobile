@@ -16,3 +16,4 @@ __export(require('./app/views/main-page/main-page'));
 __export(require('./app/views/main-page/cms-sync'));
 __export(require('./app/views/main-page/cms-fragment'));
 __export(require('./app/utils/status-bar-util'));
+__export(require('./app/global.lib'));
