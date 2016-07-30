@@ -210,7 +210,7 @@ export class Cms {
     }
 
     public createElement(type, content, cb) {
-        http.request({
+        return http.request({
             url: `${this.basePath}/cms-types/${type}`,
             headers: {"Content-Type": "application/json"},
             method: "POST",
@@ -221,11 +221,12 @@ export class Cms {
             Types[type].list = Types[type].list || [];
             Types[type].list.push(e);
             if (cb) cb(_.find(Types[type].list, {_id: ref}));
+            return JsonFn.parse(res.content.toString(), true);
         }, e => console.log(e));
     }
 
     public loadElements(type, cb, params) {
-        http.request({url: `${this.basePath}/api/v1/${type}?${params}`, method: 'GET'}).then(res => {
+        return http.request({url: `${this.basePath}/api/v1/${type}?${params}`, method: 'GET'}).then(res => {
             const list = JsonFn.parse(res.content.toString(), true);
             if (params) {
                 this.data.types[type].list = _.unionWith(this.data.types[type].list, list, (e1, e2) => e1._id === e2._id);
@@ -236,17 +237,20 @@ export class Cms {
                 if (cb) cb(this.data.types[type].list);
             }
             cache.set(`Types.${type}.list`, JsonFn.stringify(this.data.types[type].list));
+            return JsonFn.parse(res.content.toString(), true);
         });
     }
 
     public updateElement(type, model) {
-        http.request({
+        cache.set(`Types.${type}.list`, JsonFn.stringify(this.data.types[type].list));
+        return http.request({
             url: `${this.basePath}/api/v1/${type}/${model._id}`,
             headers: {"Content-Type": "application/json"},
             method: 'POST',
             content: JsonFn.stringify(model)
         }).then(function (res) {
             console.log('update element successful');
+            return JsonFn.parse(res.content.toString(), true);
         });
     }
 }

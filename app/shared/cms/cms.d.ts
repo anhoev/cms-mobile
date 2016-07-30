@@ -80,9 +80,9 @@ export declare class Cms {
     findFnByID(type: any, ID: any): any;
     findByRef(type: any, ref: any): any;
     findByID(type: any, ID: any): any;
-    createElement(type: any, content: any, cb: any): void;
-    loadElements(type: any, cb: any, params: any): void;
-    updateElement(type: any, model: any): void;
+    createElement(type: any, content: any, cb: any): any;
+    loadElements(type: any, cb: any, params: any): any;
+    updateElement(type: any, model: any): any;
 }
 export declare class ContainerService {
     data: {
