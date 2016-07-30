@@ -209,8 +209,8 @@ export class Cms {
         return _.find(Types[type].list, {ID});
     }
 
-    public createElement(type, content, cb) {
-        return http.request({
+    public createElement(type, content, resolve, failure) {
+        http.request({
             url: `${this.basePath}/cms-types/${type}`,
             headers: {"Content-Type": "application/json"},
             method: "POST",
@@ -220,37 +220,42 @@ export class Cms {
             const ref = e._id;
             Types[type].list = Types[type].list || [];
             Types[type].list.push(e);
-            if (cb) cb(_.find(Types[type].list, {_id: ref}));
-            return JsonFn.parse(res.content.toString(), true);
-        }, e => console.log(e));
+            if (resolve) resolve(_.find(Types[type].list, {_id: ref}));
+        }, e => {
+            if (failure) failure(e)
+        });
     }
 
-    public loadElements(type, cb, params) {
+    public loadElements(type, params, resolve, failure) {
         return http.request({url: `${this.basePath}/api/v1/${type}?${params}`, method: 'GET'}).then(res => {
             const list = JsonFn.parse(res.content.toString(), true);
             if (params) {
                 this.data.types[type].list = _.unionWith(this.data.types[type].list, list, (e1, e2) => e1._id === e2._id);
                 this.data.types[type].queryList = list.map(e => _.find(this.data.types[type].list, e2 => e2._id === e._id));
-                if (cb) cb(this.data.types[type].queryList);
+                if (resolve) resolve(this.data.types[type].queryList);
             } else {
                 this.data.types[type].list = list;
-                if (cb) cb(this.data.types[type].list);
+                if (resolve) resolve(this.data.types[type].list);
             }
             cache.set(`Types.${type}.list`, JsonFn.stringify(this.data.types[type].list));
             return JsonFn.parse(res.content.toString(), true);
+        }, e => {
+            if (failure) failure(e)
         });
     }
 
-    public updateElement(type, model) {
+    public updateElement(type, model, resolve, failure) {
         cache.set(`Types.${type}.list`, JsonFn.stringify(this.data.types[type].list));
-        return http.request({
+        http.request({
             url: `${this.basePath}/api/v1/${type}/${model._id}`,
             headers: {"Content-Type": "application/json"},
             method: 'POST',
             content: JsonFn.stringify(model)
         }).then(function (res) {
             console.log('update element successful');
-            return JsonFn.parse(res.content.toString(), true);
+            if (resolve) resolve(JsonFn.parse(res.content.toString(), true));
+        }, e => {
+            if (failure) failure(e)
         });
     }
 }
